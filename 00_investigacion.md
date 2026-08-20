@@ -1,4 +1,4 @@
-# 00 · Investigación previa — ITESHU + UAQ
+# 00 · Investigación previa — ITESHU
 
 > Documento de evidencia de la Tarea 0. Todos los colores y URLs fueron extraídos
 > e inspeccionados directamente de los sitios oficiales (HTML + CSS + píxeles del logo)
@@ -139,7 +139,7 @@ Neutros    #f8f8f8 · #d6d3d3 · #555555 · #ffffff
 
 ---
 
-## 6. Estructura de uaq.mx (referencia de UX)
+## 6. Referencia de diseño (portales institucionales modernos)
 
 El sitio usa Gantry 5 / UIkit. Secciones observadas:
 
@@ -156,7 +156,7 @@ El sitio usa Gantry 5 / UIkit. Secciones observadas:
    - Campus (`#Campus`)
 6. **Footer** (`#g-footer`) — institucional, enlaces masivos organizados, min-height alto.
 
-**Firma visual UAQ que replicaremos:** mucho whitespace, tarjetas limpias con
+**Firma visual que replicaremos:** mucho whitespace, tarjetas limpias con
 imagen + título + botón, CTAs de acceso repetidos y evidentes, secciones
 ancladas por id, tipografía legible, jerarquía clara.
 

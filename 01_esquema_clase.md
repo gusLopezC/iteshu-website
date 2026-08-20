@@ -1,7 +1,7 @@
 # 01 · Esquema de la clase muestra — 15 minutos
 
 **Tema:** Rediseño de la presencia web del ITESHU: identidad 100% institucional,
-experiencia estilo UAQ.
+experiencia de portales institucionales modernos.
 **Formato:** Clase muestra ante comité / grupo de aspirantes.
 **Duración total:** 15:00 minutos.
 **Material:** `index.html` (prototipo), navegador, este esquema y el guion
@@ -15,7 +15,7 @@ experiencia estilo UAQ.
 |---|---|---|---|---|
 | 1 | **Elevator pitch** | 1 min | 0:00 → 1:00 | Posicionar al ITESHU como motor tecnológico y sustentable de la región |
 | 2 | **Oferta educativa** | 6 min | 1:00 → 7:00 | Presentar las 9 carreras + posgrado, agrupadas por área |
-| 3 | **Diagnóstico actual vs. propuesta** | 4 min | 7:00 → 11:00 | Mostrar problemas de la web actual y cómo el estilo UAQ los resuelve |
+| 3 | **Diagnóstico actual vs. propuesta** | 4 min | 7:00 → 11:00 | Mostrar problemas de la web actual y cómo la propuesta los resuelve |
 | 4 | **Demo del prototipo + cierre** | 4 min | 11:00 → 15:00 | Recorrer `index.html` en vivo y cerrar con CTA de admisión |
 
 ---
@@ -67,7 +67,7 @@ prototipo (`index.html`).
   - Sin CTAs claros para aspirantes ("Quiero ser aspirante" no existe).
   - Sitio pesado (Bootstrap 3 + múltiples sliders + SDK de Facebook).
   - Experiencia móvil deficiente.
-- 9:30 – 10:45 — **La propuesta (estilo UAQ + identidad ITESHU):**
+- 9:30 – 10:45 — **La propuesta (identidad ITESHU, claridad moderna):**
   - Hero con foto real del campus + CTA único "Quiero ser aspirante".
   - Cards de servicios: Oferta, Portal, Admisión, Convocatorias, Moodle, Contacto.
   - Oferta educativa en grid visual de tarjetas con imagen real.
@@ -93,7 +93,7 @@ prototipo (`index.html`).
 - 13:30 – 14:15 — Contraste en vivo: pestaña con iteshu.edu.mx vs. pestaña con
   `index.html`; pedir a la audiencia que encuentre "Mecatrónica" en ambos.
 - 14:15 – 15:00 — Cierre:
-  - Resumen en 3 ideas: identidad intacta, claridad tipo UAQ, foco en aspirantes.
+  - Resumen en 3 ideas: identidad intacta, claridad institucional, foco en aspirantes.
   - CTA final: "Si te convenció, el siguiente paso es tu ficha de admisión."
   - Ronda de preguntas breve.
 

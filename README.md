@@ -1,8 +1,8 @@
-# ITESHU · Prototipo Web estilo UAQ
+# ITESHU · Prototipo Web institucional
 
 Prototipo de landing page para el **Instituto Tecnológico Superior de
 Huichapan**: identidad 100% institucional (colores, logo y fotografías reales de
-iteshu.edu.mx) con la claridad de navegación de uaq.mx.
+iteshu.edu.mx) con la claridad de navegación de un portal institucional moderno.
 
 **Duración de la clase muestra:** 15 minutos · **Carreras:** 9 licenciaturas +
 nueva Maestría en Desarrollo Regional e Innovación Tecnológica.
@@ -32,7 +32,7 @@ nueva Maestría en Desarrollo Regional e Innovación Tecnológica.
 3. **Hero** — tipografía serif de autoridad, foto real, CTA y banda de programas
    en movimiento (chips).
 4. **Marquee de acreditaciones** — logos reales CACECA, CACEI, OSHAS, ANFEI, ANUIES.
-5. **Servicios / Accesos rápidos** — 6 cards estilo UAQ.
+5. **Servicios / Accesos rápidos** — 6 cards claras.
 6. **¿Por qué ITESHU?** — acreditaciones, becas, vinculación y campus con datos reales.
 7. **Oferta Educativa** — grid de 11 programas con **filtros por área**
    (Todas / Ingenierías / Arquitectura y Gastronomía / Posgrado).
@@ -113,7 +113,7 @@ nueva Maestría en Desarrollo Regional e Innovación Tecnológica.
 - [ ] Escudo Hidalgo + mapa oficial de Google Maps
 - [ ] Sin Unsplash ni placeholders
 
-### ✅ Secciones estilo UAQ
+### ✅ Secciones y estructura
 - [ ] Header sticky con menú + CTA "Quiero ser aspirante"
 - [ ] Hero con foto real, título y subtítulo de sustentabilidad/transferencia
 - [ ] Cards de servicios/accesos rápidos (Oferta, Portal, Admisión, Convocatorias, Moodle, Contacto)

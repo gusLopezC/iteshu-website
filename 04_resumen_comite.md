@@ -1,6 +1,6 @@
 # 04 · Resumen para el comité
 
-**Proyecto:** Rediseño de la presencia web del ITESHU — identidad 100% institucional, experiencia estilo UAQ
+**Proyecto:** Rediseño de la presencia web del ITESHU — identidad 100% institucional, experiencia de portal moderno
 **Entregable clave:** `index.html` (prototipo funcional de una página)
 **Fecha:** 2026
 
@@ -17,11 +17,11 @@
   (carreras, biblioteca, incubadora, noticias, mapa oficial), todas verificadas
   HTTP 200. **Cero placeholders, cero imágenes inventadas.**
 
-### 2. La claridad de UAQ aplicada al ITESHU
+### 2. La claridad de un portal institucional moderno
 - Hero con CTA único; 6 accesos rápidos en tarjetas; oferta educativa en grid
   visual de portada; noticias y convocatorias separadas; campus con mapa y
   contacto; footer institucional limpio. Misma estructura de tarjetas, botones y
-  whitespace que hacen navegable a uaq.mx.
+  whitespace que hacen navegable el portal.
 
 ### 3. Rendimiento y ligereza
 - Un solo archivo HTML (Tailwind CDN, sin Bootstrap/jQuery/sliders/SDK).
@@ -50,4 +50,4 @@
 
 **Conclusión:** el prototipo conserva la marca y el contenido real del ITESHU y
 los reorganiza con la arquitectura de conversión de las grandes universidades
-públicas: **identidad intacta, claridad tipo UAQ, foco total en el aspirante.**
+públicas: **identidad intacta, claridad institucional, foco total en el aspirante.**

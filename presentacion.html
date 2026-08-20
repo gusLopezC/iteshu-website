@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITESHU · Prototipo Web estilo UAQ — Presentación (offline)</title>
+  <title>ITESHU · Prototipo Web — Presentación de la oferta educativa</title>
 
   <!-- ============================================================
        Presentación 100% OFFLINE
        - Reveal.js local (vendor/reveal/)
        - Imágenes reales de iteshu.edu.mx descargadas (assets/img/)
        - Fuentes locales (assets/fonts/)
+       - Datos de la oferta educativa: extraídos de las páginas
+         oficiales de cada programa en iteshu.edu.mx
        ============================================================ -->
   <link rel="stylesheet" href="vendor/reveal/reveal.css">
 
@@ -35,7 +37,6 @@
       --iteshu-gold:    #bc955b;
       --iteshu-green:   #006e4d;
       --iteshu-vino:    #611232;
-      --iteshu-line:    #d6d3d3;
     }
 
     .reveal {
@@ -48,8 +49,8 @@
     }
     .reveal h1, .reveal h2, .reveal h3 { text-transform: none; color: #fff; letter-spacing: 0; }
     .reveal h1 { font-family: 'Playfair Display', Georgia, serif; font-weight: 800; line-height: 1.08; }
-    .reveal h2 { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 1.55em; line-height: 1.15; }
-    .reveal h3 { font-weight: 800; font-size: .85em; }
+    .reveal h2 { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 1.5em; line-height: 1.15; }
+    .reveal h3 { font-weight: 800; font-size: .8em; }
 
     .gold { color: var(--iteshu-gold); }
     .small { font-size: .55em; color: rgba(255,255,255,.72); }
@@ -57,29 +58,35 @@
       display: inline-block; font-size: .42em; letter-spacing: .28em;
       text-transform: uppercase; color: var(--iteshu-gold); font-weight: 700; margin-bottom: .7em;
     }
-    .sub { font-size: .62em; color: rgba(255,255,255,.8); line-height: 1.6; max-width: 42em; margin: 0 auto; }
+    .sub { font-size: .62em; color: rgba(255,255,255,.8); line-height: 1.6; max-width: 44em; margin: 0 auto; }
 
-    /* Tarjetas */
-    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1em; text-align: left; }
-    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1em; text-align: left; }
-    .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: .9em; text-align: left; }
+    /* Tarjetas generales */
     .card {
       background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.14);
       border-radius: 12px; padding: 1em 1.1em;
     }
-    .card h3 { color: var(--iteshu-gold); font-size: .8em; margin-bottom: .35em; }
-    .card p { font-size: .5em; line-height: 1.55; color: rgba(255,255,255,.82); margin: 0; }
-    .card-img { border-radius: 10px; border: 2px solid var(--iteshu-gold); width: 100%; object-fit: cover; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1em; text-align: left; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1em; text-align: left; }
+    .grid4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1em; text-align: left; }
 
-    /* Tarjetas de carrera con imagen */
-    .prog { text-align: center; padding: .8em .6em; }
-    .prog img { width: 118px; height: 118px; border-radius: 50%; object-fit: cover; border: 3px solid var(--iteshu-gold); margin-bottom: .6em; }
-    .prog h3 { color: #fff; font-size: .62em; margin-bottom: .25em; }
-    .prog p { font-size: .42em; color: rgba(255,255,255,.7); line-height: 1.4; margin: 0; }
-    .prog .badge { display: inline-block; background: var(--iteshu-gold); color: var(--iteshu-dark); font-weight: 800; border-radius: 20px; padding: .1em .6em; font-size: .38em; margin-bottom: .4em; text-transform: uppercase; letter-spacing: .08em; }
+    /* Tarjeta de programa con contexto real */
+    .prog { padding: .9em 1em; }
+    .prog-head { display: flex; gap: .9em; align-items: center; margin-bottom: .55em; }
+    .prog-head img {
+      width: 84px; height: 84px; border-radius: 50%; object-fit: cover;
+      border: 3px solid var(--iteshu-gold); flex-shrink: 0;
+    }
+    .prog-head h3 { font-size: .72em; margin: 0 0 .2em; line-height: 1.2; }
+    .prog-meta { font-size: .42em; color: var(--iteshu-gold); font-weight: 600; line-height: 1.5; }
+    .prog p.obj { font-size: .48em; color: rgba(255,255,255,.82); line-height: 1.55; margin: 0; }
+    .chip {
+      display: inline-block; background: rgba(188,149,91,.15); border: 1px solid rgba(188,149,91,.45);
+      color: var(--iteshu-gold); border-radius: 20px; padding: .1em .7em; font-size: .42em; font-weight: 700;
+      margin: .1em .2em .1em 0;
+    }
 
-    /* Iconos de lista */
+    /* Listas con iconos */
     .items { list-style: none; margin: 0; padding: 0; text-align: left; }
     .items li { display: flex; gap: .7em; align-items: flex-start; font-size: .55em; line-height: 1.5; margin-bottom: .65em; }
     .items .ic { width: 1.5em; height: 1.5em; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1em; font-weight: 900; }
@@ -87,7 +94,6 @@
     .items .yes { background: rgba(0,110,77,.25); color: #6ee7a0; border: 1px solid rgba(0,110,77,.6); }
     .items strong { color: #fff; }
 
-    /* Logo */
     .logo { background: #fff; padding: .35em .6em; border-radius: 8px; height: 62px; }
 
     /* Píe de cada diapositiva */
@@ -103,7 +109,6 @@
     .reveal .progress { color: var(--iteshu-gold); height: 4px; }
     .reveal .controls { color: var(--iteshu-gold); }
     .reveal .slide-number { background: rgba(255,255,255,.08); color: var(--iteshu-gold); font-size: 12px; border-radius: 4px; padding: .1em .5em; }
-    .reveal blockquote { border-left: 4px solid var(--iteshu-gold); background: rgba(255,255,255,.05); padding: .6em 1em; font-size: .6em; font-style: italic; }
     .reveal section { padding: 0 5vw; }
   </style>
 </head>
@@ -117,8 +122,8 @@
          ============================================================ -->
     <section>
       <img class="logo" src="assets/img/logo.jpg" alt="Logo ITESHU">
-      <p class="tag" style="margin-top:1em;">Prototipo web · Identidad ITESHU · Experiencia UAQ</p>
-      <h1 style="font-size:2.6em; margin:.2em 0;">El motor tecnológico y<br>sustentable de la región</h1>
+      <p class="tag" style="margin-top:1em;">Prototipo web · Identidad ITESHU · Experiencia institucional</p>
+      <h1 style="font-size:2.5em; margin:.2em 0;">El motor tecnológico y<br>sustentable de la región</h1>
       <p class="sub fragment" data-fragment-index="1">
         <strong class="gold">9 programas</strong> de ingeniería, arquitectura y gastronomía ·
         <strong class="gold">nueva Maestría en Desarrollo Regional e Innovación Tecnológica</strong> ·
@@ -132,80 +137,219 @@
       <aside class="notes">
         [00:00] ¿Qué pasaría si la página del ITESHU convenciera tanto como su oferta educativa?
         Hoy tenemos 9 programas y una nueva maestría; somos el motor tecnológico y sustentable de la región.
-        En 15 minutos les muestro cómo convertimos nuestra web en una puerta de entrada que convierte visitantes en aspirantes.
+        En 15 minutos les muestro nuestra oferta con datos reales y cómo convertimos la web en una puerta de entrada para aspirantes.
       </aside>
     </section>
 
     <!-- ============================================================
-         2 · OFERTA EDUCATIVA — INGENIERÍAS  [01:30 – 04:00]
+         2 · LA OFERTA DE UN VISTAZO  [01:00 – 01:30]
          ============================================================ -->
     <section>
-      <p class="tag">Oferta educativa · 1/3</p>
-      <h2>Ingenierías</h2>
-      <p class="sub" style="margin-bottom:1.2em;">Siete programas con laboratorios, vinculación empresarial y residencias profesionales reales.</p>
-      <div class="grid4">
-        <div class="card prog fragment"><span class="badge">Demandada</span><br><img src="assets/img/mecatronica.jpg" alt="Ingeniería Mecatrónica"><h3>Mecatrónica</h3><p>Automatización, robótica y sistemas ciberfísicos.</p></div>
-        <div class="card prog fragment"><span class="badge">Demandada</span><br><img src="assets/img/sistemasc.jpg" alt="Ingeniería en Sistemas Computacionales"><h3>Sistemas Computacionales</h3><p>Software, redes, datos e inteligencia artificial.</p></div>
-        <div class="card prog fragment"><span class="badge">Virtual</span><br><img src="assets/img/igem.jpg" alt="Ingeniería en Gestión Empresarial"><h3>Gestión Empresarial</h3><p>La ingeniería de los negocios y el emprendimiento.</p></div>
-        <div class="card prog fragment"><img src="assets/img/admin.jpg" alt="Ingeniería en Administración"><h3>Administración</h3><p>Gestión estratégica con visión de negocio.</p></div>
-        <div class="card prog fragment"><span class="badge">Sello regional</span><br><img src="assets/img/energias.jpg" alt="Ingeniería en Energías Renovables"><h3>Energías Renovables</h3><p>Solar, eólica y sustentabilidad energética.</p></div>
-        <div class="card prog fragment"><span class="badge">Sello regional</span><br><img src="assets/img/innovacion.jpg" alt="Ingeniería en Innovación Agrícola Sustentable"><h3>Innovación Agrícola</h3><p>Tecnología aplicada al campo con productores.</p></div>
-        <div class="card prog fragment"><img src="assets/img/industrial.jpg" alt="Ingeniería Industrial"><h3>Industrial</h3><p>Optimización de procesos, calidad y logística.</p></div>
-        <div class="card prog fragment" style="display:flex; flex-direction:column; justify-content:center; align-items:center; border-color:rgba(188,149,91,.5); background:rgba(188,149,91,.08);">
-          <p style="font-size:.5em; color:var(--iteshu-gold); font-weight:800;">+</p>
-          <h3 style="color:var(--iteshu-gold);">Modalidades</h3>
-          <p>Mixta · Fin de semana · Espacio académico Tecozautla</p>
+      <p class="tag">Oferta educativa · Panorama</p>
+      <h2>La oferta de un vistazo</h2>
+      <div class="grid2" style="grid-template-columns: 3fr 2fr; align-items:center; margin-top:.6em;">
+        <div>
+          <p class="sub" style="text-align:left; margin:0 0 1em;">Nueve programas de licenciatura y dos maestrías, organizados en tres grandes familias.</p>
+          <div class="grid2" style="gap:.7em;">
+            <div class="card">
+              <h3 style="color:var(--iteshu-gold); font-size:.68em;">Ingenierías</h3>
+              <p style="font-size:.5em; line-height:1.6;">Mecatrónica · Sistemas Computacionales · Gestión Empresarial · Administración · Energías Renovables · Innovación Agrícola Sustentable · Industrial</p>
+            </div>
+            <div class="card">
+              <h3 style="color:var(--iteshu-gold); font-size:.68em;">Arquitectura y Gastronomía</h3>
+              <p style="font-size:.5em; line-height:1.6;">Arquitectura · Gastronomía</p>
+              <h3 style="color:var(--iteshu-gold); font-size:.68em; margin-top:.8em;">Posgrado</h3>
+              <p style="font-size:.5em; line-height:1.6;">Maestría en Desarrollo Regional e Innovación Tecnológica · Maestría en Ingeniería Mecatrónica</p>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="border-left:4px solid var(--iteshu-gold);">
+          <p style="font-size:.52em; line-height:1.7;">
+            <strong style="color:#fff;">Datos reales de todos los programas:</strong><br><br>
+            <span class="chip">9 semestres</span><span class="chip">Plan semestral</span><br>
+            <span class="chip">Modalidad presencial</span><span class="chip">Inglés</span><br><br>
+            Títulos otorgados: <strong style="color:var(--iteshu-gold);">Ingeniería</strong> en 7 programas y
+            <strong style="color:var(--iteshu-gold);">Licenciatura</strong> en Arquitectura y Gastronomía.
+          </p>
         </div>
       </div>
       <aside class="notes">
-        [01:30] Seis ingenierías, todas con laboratorios, vinculación empresarial y residencias profesionales reales.
-        Mencionar el sello regional de Energías Renovables e Innovación Agrícola, y la modalidad virtual de Gestión Empresarial.
+        [01:00] Tres familias: siete ingenierías, dos licenciaturas creativas y el posgrado.
+        Dato clave: todos los programas son de 9 semestres, plan semestral, modalidad presencial y con dominio de idiomas inglés.
       </aside>
     </section>
 
     <!-- ============================================================
-         3 · OFERTA EDUCATIVA — ARQUITECTURA & GASTRONOMÍA  [04:00 – 05:00]
+         3 · INGENIERÍAS I  [01:30 – 03:00]
          ============================================================ -->
     <section>
-      <p class="tag">Oferta educativa · 2/3</p>
+      <p class="tag">Oferta educativa · Ingenierías 1/2</p>
+      <h2>Ingenierías · Parte 1</h2>
+      <div class="grid2" style="margin-top:.8em;">
+        <div class="card prog fragment">
+          <div class="prog-head">
+            <img src="assets/img/mecatronica.jpg" alt="Ingeniería Mecatrónica">
+            <div>
+              <h3>Ingeniería Mecatrónica</h3>
+              <p class="prog-meta">Título: Ingeniería Mecatrónica</p>
+              <span class="chip">Demandada</span>
+            </div>
+          </div>
+          <p class="obj">Formar profesionistas capaces de diseñar, proyectar, construir e innovar equipos y sistemas mecatrónicos para el sector productivo.</p>
+          <p style="font-size:.42em; margin:.6em 0 0;"><span class="chip">9 semestres</span><span class="chip">Presencial</span><span class="chip">Inglés</span></p>
+        </div>
+        <div class="card prog fragment">
+          <div class="prog-head">
+            <img src="assets/img/sistemasc.jpg" alt="Ingeniería en Sistemas Computacionales">
+            <div>
+              <h3>Ingeniería en Sistemas Computacionales</h3>
+              <p class="prog-meta">Título: Ing. en Sistemas Computacionales</p>
+              <span class="chip">Demandada</span>
+            </div>
+          </div>
+          <p class="obj">Formar líderes analíticos y creativos capaces de diseñar, implementar y administrar infraestructura computacional para aportar soluciones.</p>
+          <p style="font-size:.42em; margin:.6em 0 0;"><span class="chip">9 semestres</span><span class="chip">Presencial</span><span class="chip">Inglés</span></p>
+        </div>
+        <div class="card prog fragment">
+          <div class="prog-head">
+            <img src="assets/img/igem.jpg" alt="Ingeniería en Gestión Empresarial">
+            <div>
+              <h3>Ingeniería en Gestión Empresarial</h3>
+              <p class="prog-meta">Título: Ing. en Gestión Empresarial</p>
+              <span class="chip">Virtual</span>
+            </div>
+          </div>
+          <p class="obj">Contribuir a la gestión de empresas e innovación de procesos; diseñar e implementar sistemas estratégicos de negocios optimizando recursos.</p>
+          <p style="font-size:.42em; margin:.6em 0 0;"><span class="chip">9 semestres</span><span class="chip">Presencial / Virtual</span><span class="chip">Inglés</span></p>
+        </div>
+        <div class="card prog fragment">
+          <div class="prog-head">
+            <img src="assets/img/admin.jpg" alt="Ingeniería en Administración">
+            <div>
+              <h3>Ingeniería en Administración</h3>
+              <p class="prog-meta">Título: Ing. en Administración</p>
+            </div>
+          </div>
+          <p class="obj">Formar profesionistas competentes en la creación, dirección e innovación de organizaciones, con visión emprendedora, ética y responsabilidad social.</p>
+          <p style="font-size:.42em; margin:.6em 0 0;"><span class="chip">9 semestres</span><span class="chip">Presencial</span><span class="chip">Inglés</span></p>
+        </div>
+      </div>
+      <aside class="notes">
+        [01:30] Mecatrónica y Sistemas: las más demandadas. Gestión Empresarial con opción virtual. Administración: creación y dirección de organizaciones.
+        Todas de 9 semestres, con inglés y vinculación real.
+      </aside>
+    </section>
+
+    <!-- ============================================================
+         4 · INGENIERÍAS II  [03:00 – 04:30]
+         ============================================================ -->
+    <section>
+      <p class="tag">Oferta educativa · Ingenierías 2/2</p>
+      <h2>Ingenierías · Parte 2 · Sello regional</h2>
+      <div class="grid3" style="margin-top:.8em;">
+        <div class="card prog fragment">
+          <div class="prog-head">
+            <img src="assets/img/energias.jpg" alt="Ingeniería en Energías Renovables">
+            <div>
+              <h3>Energías Renovables</h3>
+              <p class="prog-meta">Título: Ing. en Energías Renovables</p>
+              <span class="chip">Sello regional</span>
+            </div>
+          </div>
+          <p class="obj">Intervenir en proyectos de generación, transformación y almacenamiento de energía de fuentes renovables y uso eficiente.</p>
+          <p style="font-size:.42em; margin:.6em 0 0;"><span class="chip">9 semestres</span><span class="chip">Presencial</span></p>
+        </div>
+        <div class="card prog fragment">
+          <div class="prog-head">
+            <img src="assets/img/innovacion.jpg" alt="Ingeniería en Innovación Agrícola Sustentable">
+            <div>
+              <h3>Innovación Agrícola Sustentable</h3>
+              <p class="prog-meta">Título: Ing. en Innovación Agrícola Sustentable</p>
+              <span class="chip">Sello regional</span>
+            </div>
+          </div>
+          <p class="obj">Planeación del desarrollo regional en el contexto de la sustentabilidad, con proyectos reales junto a productores de la región.</p>
+          <p style="font-size:.42em; margin:.6em 0 0;"><span class="chip">9 semestres</span><span class="chip">Presencial</span></p>
+        </div>
+        <div class="card prog fragment">
+          <div class="prog-head">
+            <img src="assets/img/industrial.jpg" alt="Ingeniería Industrial">
+            <div>
+              <h3>Ingeniería Industrial</h3>
+              <p class="prog-meta">Título: Ingeniería Industrial</p>
+            </div>
+          </div>
+          <p class="obj">Diseñar, implementar, mejorar e innovar sistemas productivos y de servicios con visión sistémica y capacidad analítica.</p>
+          <p style="font-size:.42em; margin:.6em 0 0;"><span class="chip">9 semestres</span><span class="chip">Presencial</span></p>
+        </div>
+      </div>
+      <p class="fragment" style="margin-top:1.2em; font-size:.52em; color:rgba(255,255,255,.75);">
+        Además: <strong style="color:var(--iteshu-gold);">modalidad mixta</strong> · <strong style="color:var(--iteshu-gold);">espacio académico Tecozautla</strong> · verano en la industria · educación dual.
+      </p>
+      <aside class="notes">
+        [03:00] El sello regional: Energías Renovables e Innovación Agrícola Sustentable, con proyectos reales.
+        Industrial: eficiencia de procesos. Además modalidad mixta, espacio académico en Tecozautla, verano en la industria y educación dual.
+      </aside>
+    </section>
+
+    <!-- ============================================================
+         5 · ARQUITECTURA Y GASTRONOMÍA  [04:00 – 05:00]
+         ============================================================ -->
+    <section>
+      <p class="tag">Oferta educativa · Áreas creativas</p>
       <h2>Arquitectura y Gastronomía</h2>
-      <p class="sub" style="margin-bottom:1.2em;">Las áreas creativas donde la identidad se encuentra con el emprendimiento.</p>
-      <div class="grid2" style="max-width:44em; margin:0 auto;">
-        <div class="card" style="padding:1.2em;">
-          <img class="card-img" src="assets/img/arquitectura.jpg" alt="Arquitectura" style="height:220px;">
-          <h3 style="margin-top:.8em;">Arquitectura</h3>
-          <p>Diseño del hábitat humano: espacios sostenibles para la comunidad, con visión de desarrollo territorial.</p>
+      <p class="sub" style="margin-bottom:1.1em;">Las áreas donde la identidad se encuentra con el emprendimiento.</p>
+      <div class="grid2" style="max-width:46em; margin:0 auto;">
+        <div class="card prog fragment" style="padding:1.1em;">
+          <div class="prog-head">
+            <img src="assets/img/arquitectura.jpg" alt="Arquitectura" style="width:100px;height:100px;">
+            <div>
+              <h3 style="font-size:.85em;">Licenciatura en Arquitectura</h3>
+              <p class="prog-meta">Título: Licenciado en Arquitectura</p>
+              <span class="chip">9 semestres</span><span class="chip">Presencial</span>
+            </div>
+          </div>
+          <p class="obj">Formar profesionistas líderes capaces de planear, diseñar, gestionar y construir el hábitat humano con vocación de servicio a la sociedad.</p>
         </div>
-        <div class="card" style="padding:1.2em;">
-          <img class="card-img" src="assets/img/gastronomia.jpg" alt="Gastronomía" style="height:220px;">
-          <h3 style="margin-top:.8em;">Gastronomía</h3>
-          <p>La cocina como industria, identidad y emprendimiento: del aula al restaurante y al producto regional.</p>
+        <div class="card prog fragment" style="padding:1.1em;">
+          <div class="prog-head">
+            <img src="assets/img/gastronomia.jpg" alt="Gastronomía" style="width:100px;height:100px;">
+            <div>
+              <h3 style="font-size:.85em;">Licenciatura en Gastronomía</h3>
+              <p class="prog-meta">Título: Licenciado en Gastronomía</p>
+              <span class="chip">9 semestres</span><span class="chip">Presencial</span>
+            </div>
+          </div>
+          <p class="obj">Formar profesionales de la gastronomía con liderazgo, creatividad, sustentabilidad e innovación, atendiendo las necesidades de su entorno.</p>
         </div>
       </div>
       <aside class="notes">
-        [04:00] La segunda familia: las áreas creativas. Arquitectura diseñando el hábitat de nuestras comunidades;
-        Gastronomía con la cocina como industria y como identidad. Donde la creatividad se encuentra con el emprendimiento.
+        [04:00] Arquitectura: diseñar el hábitat de nuestras comunidades. Gastronomía: la cocina como industria e identidad.
+        Ambas otorgan título de Licenciatura y comparten los 9 semestres.
       </aside>
     </section>
 
     <!-- ============================================================
-         4 · OFERTA EDUCATIVA — MAESTRÍA  [05:00 – 06:30]
+         6 · POSGRADO — MAESTRÍA  [05:00 – 06:30]
          ============================================================ -->
     <section>
-      <p class="tag">Oferta educativa · 3/3 · Nuevo posgrado</p>
+      <p class="tag">Oferta educativa · Posgrado · Nuevo programa</p>
       <h2>Maestría en Desarrollo Regional e<br>Innovación Tecnológica</h2>
-      <div class="grid2" style="grid-template-columns: 3fr 2fr; align-items:center; margin-top:1em;">
+      <div class="grid2" style="grid-template-columns: 3fr 2fr; align-items:center; margin-top:.8em;">
         <div>
           <ul class="items">
             <li class="fragment"><span class="ic yes">✓</span><span><strong>LGAC 1 · Desarrollo Regional Sostenible:</strong> agricultura sostenible, soberanía alimentaria y proyectos con impacto territorial.</span></li>
             <li class="fragment"><span class="ic yes">✓</span><span><strong>LGAC 2 · Innovación Tecnológica e Industria 4.0:</strong> energías renovables, inteligencia artificial y emprendimiento tecnológico.</span></li>
             <li class="fragment"><span class="ic yes">✓</span><span>Dirigida a egresados de <strong>ingeniería, arquitectura, administración, economía y ciencias ambientales</strong>.</span></li>
           </ul>
-          <p class="small fragment" style="margin-top:1em;">También contamos con la <strong class="gold">Maestría en Ingeniería Mecatrónica</strong> (posgrado profesionalizante).</p>
+          <div class="card fragment" style="margin-top:1em; border-left:4px solid var(--iteshu-gold);">
+            <p style="font-size:.48em; line-height:1.6;">También ofrecemos la <strong style="color:#fff;">Maestría en Ingeniería Mecatrónica</strong>:
+            programa profesionalizante de <strong style="color:var(--iteshu-gold);">100 créditos SATCA</strong> con seminarios de tesis I, II y III.</p>
+          </div>
         </div>
         <div class="fragment" style="position:relative;">
           <div style="position:absolute; inset:-10px; border:2px solid var(--iteshu-gold); border-radius:14px;"></div>
-          <img class="card-img" src="assets/img/maestria_dev.jpg" alt="Fotografía oficial: evento de la nueva Maestría" style="height:280px;">
+          <img class="card-img" src="assets/img/maestria_dev.jpg" alt="Fotografía oficial: evento de la nueva Maestría" style="height:280px; width:100%; object-fit:cover; border-radius:10px;">
           <div style="position:absolute; bottom:-14px; left:10px; background:var(--iteshu-gold); color:var(--iteshu-dark); border-radius:8px; padding:.4em .8em; font-size:.45em; font-weight:800;">
             Convocatoria abierta · 2026
           </div>
@@ -215,11 +359,12 @@
         [05:00] La gran novedad: la Maestría en Desarrollo Regional e Innovación Tecnológica.
         Dos LGAC: Desarrollo Regional Sostenible e Innovación Tecnológica e Industria 4.0.
         Responde a una necesidad real: la región necesita especialistas que conecten la tecnología con el desarrollo de las comunidades.
+        También: Maestría en Ingeniería Mecatrónica, 100 créditos SATCA.
       </aside>
     </section>
 
     <!-- ============================================================
-         5 · PROBLEMAS DE LA WEB ACTUAL  [07:00 – 09:30]
+         7 · PROBLEMAS DE LA WEB ACTUAL  [07:00 – 09:30]
          ============================================================ -->
     <section>
       <p class="tag">Diagnóstico · 1/2</p>
@@ -237,7 +382,7 @@
           <ul class="items">
             <li class="fragment"><span class="ic no">✗</span><span><strong>Carrusel mezclado</strong> sin jerarquía ni llamado a la acción.</span></li>
             <li class="fragment"><span class="ic no">✗</span><span><strong>No existe "Quiero ser aspirante"</strong> — no hay ruta de conversión.</span></li>
-            <li class="fragment"><span class="ic no">✗</span><span><strong>Sitio pesado y móvil deficiente</strong>: Bootstrap 3, sliders y SDK de Facebook.</span></li>
+            <li class="fragment"><span class="ic no">✗</span><span><strong>Sitio pesado y móvil deficiente</strong>: varios frameworks y sliders.</span></li>
           </ul>
         </div>
       </div>
@@ -248,10 +393,10 @@
     </section>
 
     <!-- ============================================================
-         6 · SOLUCIONES DEL PROTOTIPO  [09:30 – 11:00]
+         8 · SOLUCIONES DEL PROTOTIPO  [09:30 – 11:00]
          ============================================================ -->
     <section>
-      <p class="tag">Diagnóstico · 2/2 · Estilo UAQ + identidad ITESHU</p>
+      <p class="tag">Diagnóstico · 2/2 · La propuesta</p>
       <h2>La propuesta resuelve todo</h2>
       <p class="sub" style="margin-bottom:1em;">Mismos colores, mismo logo y mismas fotografías. <span class="gold">Nueva claridad.</span></p>
       <div class="grid2" style="max-width:46em; margin:0 auto;">
@@ -259,7 +404,7 @@
           <ul class="items">
             <li class="fragment"><span class="ic yes">✓</span><span><strong>Hero con foto real + CTA único</strong> "Quiero ser aspirante".</span></li>
             <li class="fragment"><span class="ic yes">✓</span><span><strong>Oferta educativa en grid de portada</strong> con filtros por área.</span></li>
-            <li class="fragment"><span class="ic yes">✓</span><span><strong>Cards con extractos cortos</strong> y whitespace estilo UAQ.</span></li>
+            <li class="fragment"><span class="ic yes">✓</span><span><strong>Cards con extractos cortos</strong> y mucho whitespace.</span></li>
           </ul>
         </div>
         <div class="card" style="border-left:4px solid var(--iteshu-green);">
@@ -277,8 +422,8 @@
       <aside class="notes">
         [09:30] La propuesta resuelve todo manteniendo exactamente la identidad del ITESHU.
         Hero con foto real y CTA, oferta en grid con filtros, cards limpias, sección de la nueva maestría,
-        admisión en 4 pasos, y un solo archivo ligero y mobile-first. [14:15] Tres ideas: identidad intacta,
-        claridad tipo UAQ, foco total en el aspirante. Gracias.
+        admisión en 4 pasos, y un solo archivo ligero y mobile-first.
+        [14:15] Tres ideas: identidad intacta, claridad institucional, foco total en el aspirante. Gracias.
       </aside>
     </section>
 
@@ -291,7 +436,7 @@
     <img src="assets/img/logo.jpg" alt="ITESHU">
     Instituto Tecnológico Superior de Huichapan
   </span>
-  <span>Prototipo web · estilo UAQ + identidad ITESHU</span>
+  <span>Oferta educativa · datos oficiales iteshu.edu.mx</span>
 </div>
 
 <!-- Reveal.js local + plugin de notas -->

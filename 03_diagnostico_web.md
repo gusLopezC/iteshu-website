@@ -1,7 +1,7 @@
-# 03 · Diagnóstico UX de iteshu.edu.mx vs. propuesta estilo UAQ
+# 03 · Diagnóstico UX de iteshu.edu.mx vs. propuesta
 
 > Diagnóstico basado en inspección directa del sitio (HTML + CSS oficiales,
-> `00_investigacion.md`) y en la observación de la estructura de uaq.mx.
+> `00_investigacion.md`) y en referencias de portales institucionales modernos.
 > Cada problema se contrasta con la solución implementada en `index.html`.
 
 ---
@@ -13,7 +13,7 @@ iteshu.edu.mx es un sitio institucional correcto en contenido, pero está
 prioriza avisos de licitación sobre la oferta educativa, oculta las carreras en
 menús profundos y carece de un camino de conversión hacia la admisión. La
 propuesta conserva la identidad y el contenido, y reorganiza todo alrededor de
-la experiencia del futuro estudiante, con la claridad visual de uaq.mx.
+la experiencia del futuro estudiante, con la claridad de un portal institucional moderno.
 
 ---
 
@@ -26,9 +26,9 @@ la experiencia del futuro estudiante, con la claridad visual de uaq.mx.
   carreras no aparecen en la primera pantalla.
 - **Consecuencia:** un aspirante no sabe en 5 segundos qué se estudia en el
   ITESHU (regla de los 5 segundos de UX).
-- **Propuesta (UAQ):** el hero muestra el campus y un CTA único "Quiero ser
+- **Propuesta:** el hero muestra el campus y un CTA único "Quiero ser
   aspirante"; las convocatorias viven en su propia sección ordenada
-  ("Noticias / Convocatorias"), como hace uaq.mx con sus secciones `#Convocatorias`
+  ("Noticias / Convocatorias")
   y `#Agenda` separadas del contenido principal.
 
 ### P2 · La oferta educativa está oculta en un menú desplegable multicapa
@@ -37,9 +37,9 @@ la experiencia del futuro estudiante, con la claridad visual de uaq.mx.
   contenido más importante de la institución.
 - **Consecuencia:** fricción de descubrimiento; en móvil el menú de Bootstrap 3
   es aún más difícil de operar.
-- **Propuesta (UAQ):** la oferta educativa es una **sección de portada en grid
+- **Propuesta:** la oferta educativa es una **sección de portada en grid
   visual** (imagen real + nombre + descripción breve + botón), visible sin
-  ningún clic, replicando los `jlcontentgrid` de tarjetas de uaq.mx.
+  ningún clic, como grid de tarjetas.
 
 ### P3 · Textos extensos sin jerarquía visual
 - **Evidencia:** secciones como "NOTICIAS" muestran párrafos largos justificados
@@ -47,8 +47,8 @@ la experiencia del futuro estudiante, con la claridad visual de uaq.mx.
   (`opd.css`: `.noticia{height:70px; overflow:hidden}`), es decir, el sitio
   corta el texto en lugar de resumirlo.
 - **Consecuencia:** se pierde el mensaje; leer en pantalla es fatigoso.
-- **Propuesta (UAQ):** tarjetas con títulos cortos, extractos de 1-2 líneas y
-  enlace "Ver más", con abundante whitespace, como las cards de noticias de uaq.mx.
+- **Propuesta:** tarjetas con títulos cortos, extractos de 1-2 líneas y
+  enlace "Ver más", con abundante whitespace.
 
 ### P4 · Carrusel principal con prioridades mezcladas y sin CTA
 - **Evidencia:** el carrusel mezcla becas, licitaciones, protocolos y fichas de
@@ -56,7 +56,7 @@ la experiencia del futuro estudiante, con la claridad visual de uaq.mx.
   ciclo automático (`autoplayTimeout: 2500` en los carruseles owl).
 - **Consecuencia:** el contenido clave compite con el ruido; el visitante no
   sabe qué hacer.
-- **Propuesta (UAQ):** un hero estático con mensaje fuerte y un único CTA
+- **Propuesta:** un hero estático con mensaje fuerte y un único CTA
   primario; los avisos secundarios se organizan en secciones con título claro.
 
 ### P5 · No existe un camino de conversión para aspirantes
@@ -66,9 +66,9 @@ la experiencia del futuro estudiante, con la claridad visual de uaq.mx.
   avisos.
 - **Consecuencia:** el objetivo principal del sitio (reclutar aspirantes) no
   tiene apoyo de UI.
-- **Propuesta (UAQ):** CTA persistente en hero, header y footer; sección
+- **Propuesta:** CTA persistente en hero, header y footer; sección
   "Servicios / Accesos rápidos" con card "Admisión" y card "Convocatorias";
-  cards de portales (Portal Alumno, Moodle) al estilo de los accesos de uaq.mx
+  cards de portales (Portal Alumno, Moodle)
   ("Portal", "Correo", "Bibliotecas").
 
 ### P6 · Performance y peso del sitio
@@ -78,7 +78,7 @@ la experiencia del futuro estudiante, con la claridad visual de uaq.mx.
   (una vez en la portada y otra en el modal).
 - **Consecuencia:** tiempos de carga altos, sobre todo en el móvil rural donde
   vive la mayoría de aspirantes.
-- **Propuesta (UAQ):** un solo `index.html` con Tailwind CDN, imágenes con
+- **Propuesta:** un solo `index.html` con Tailwind CDN, imágenes con
   `loading="lazy"`, `width/height` definidos para evitar layout shift, sin
   librerías pesadas; el prototipo pesa una fracción del sitio actual.
 
@@ -89,7 +89,7 @@ la experiencia del futuro estudiante, con la claridad visual de uaq.mx.
   no están pensadas para móvil.
 - **Consecuencia:** el segmento más importante (aspirantes jóvenes, 100% móvil)
   recibe la peor experiencia.
-- **Propuesta (UAQ):** diseño **mobile-first**: menú hamburguesa funcional con
+- **Propuesta:** diseño **mobile-first**: menú hamburguesa funcional con
   cierre por overlay, grid que colapsa de 4→2→1 columnas, tipografía legible,
   botones grandes táctiles.
 
@@ -98,15 +98,15 @@ la experiencia del futuro estudiante, con la claridad visual de uaq.mx.
   (avisos → noticias → estudiantes → acreditaciones → oferta), y el menú
   principal no coincide con las secciones visibles de la página.
 - **Consecuencia:** el usuario no sabe dónde está ni a dónde puede ir.
-- **Propuesta (UAQ):** menú fijo con anclas reales (Oferta Educativa, Admisión,
+- **Propuesta:** menú fijo con anclas reales (Oferta Educativa, Admisión,
   Campus, Noticias, Contacto) que corresponden a secciones de la misma página,
-  como el header con offcanvas de uaq.mx.
+  como un header fijo con menú claro.
 
 ---
 
 ## Tabla resumen problema → solución
 
-| # | Problema actual | Solución estilo UAQ en `index.html` |
+| # | Problema actual | Solución en `index.html` |
 |---|---|---|
 | P1 | Portada llena de licitaciones | Hero con campus + CTA "Quiero ser aspirante"; convocatorias en sección propia |
 | P2 | Oferta oculta en menú profundo | Grid visual de carreras en portada, a un clic |

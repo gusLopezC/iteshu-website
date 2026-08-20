@@ -135,7 +135,7 @@
 
 **[10:00]** *(CV: señala secciones del prototipo)*
 > Un hero con foto real y un CTA único: **"Quiero ser aspirante"**.
-> Cards de servicios al estilo UAQ: Oferta, Portal, Admisión, Convocatorias,
+> Cards de servicios claras: Oferta, Portal, Admisión, Convocatorias,
 > Moodle, Contacto.
 > La oferta educativa en un **grid visual** con imagen real por carrera.
 > Una sección especial para la nueva Maestría.
@@ -180,7 +180,7 @@
 > está a un clic, visible desde la portada.
 
 **[14:15]** *(CV: cierre, tono firme y cálido)*
-> Tres ideas para llevarse: **identidad intacta, claridad tipo UAQ, foco total
+> Tres ideas para llevarse: **identidad intacta, claridad institucional, foco total
 > en el aspirante.** El ITESHU ya es el motor tecnológico y sustentable de la
 > región; nuestra web debe decirlo desde el primer segundo.
 
