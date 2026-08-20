@@ -45,7 +45,7 @@
                   var(--iteshu-dark);
       color: #fff;
       font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-      font-size: 30px;
+      font-size: 23px;
     }
     .reveal h1, .reveal h2, .reveal h3 { text-transform: none; color: #fff; letter-spacing: 0; }
     .reveal h1 { font-family: 'Playfair Display', Georgia, serif; font-weight: 800; line-height: 1.08; }
@@ -56,35 +56,37 @@
     .small { font-size: .55em; color: rgba(255,255,255,.72); }
     .tag {
       display: inline-block; font-size: .42em; letter-spacing: .28em;
-      text-transform: uppercase; color: var(--iteshu-gold); font-weight: 700; margin-bottom: .7em;
+      text-transform: uppercase; color: var(--iteshu-gold); font-weight: 700; margin-bottom: .5em;
     }
-    .sub { font-size: .62em; color: rgba(255,255,255,.8); line-height: 1.6; max-width: 44em; margin: 0 auto; }
+    .sub { font-size: .6em; color: rgba(255,255,255,.8); line-height: 1.55; max-width: 40em; margin: 0 auto; }
 
     /* Tarjetas generales */
     .card {
       background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.14);
-      border-radius: 12px; padding: 1em 1.1em;
+      border-radius: 12px; padding: .85em .95em;
     }
-    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1em; text-align: left; }
-    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1em; text-align: left; }
+    .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9em; text-align: left; width: 100%; max-width: min(92vw, 960px); margin: 0 auto; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .9em; text-align: left; width: 100%; max-width: min(94vw, 1120px); margin: 0 auto; }
     .grid4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1em; text-align: left; }
 
     /* Tarjeta de programa con contexto real */
-    .prog { padding: .9em 1em; }
-    .prog-head { display: flex; gap: .9em; align-items: center; margin-bottom: .55em; }
+    .prog { padding: .75em .85em; min-width: 0; }
+    .card { min-width: 0; }
+    .prog-head { display: flex; gap: .8em; align-items: center; margin-bottom: .45em; }
     .prog-head img {
-      width: 84px; height: 84px; border-radius: 50%; object-fit: cover;
+      width: 62px; height: 62px; border-radius: 50%; object-fit: cover;
       border: 3px solid var(--iteshu-gold); flex-shrink: 0;
     }
-    .prog-head h3 { font-size: .72em; margin: 0 0 .2em; line-height: 1.2; }
-    .prog-meta { font-size: .42em; color: var(--iteshu-gold); font-weight: 600; line-height: 1.5; }
-    .prog p.obj { font-size: .48em; color: rgba(255,255,255,.82); line-height: 1.55; margin: 0; }
+    .prog-head h3 { font-size: 15px; margin: 0 0 .15em; line-height: 1.2; }
+    .prog-meta { font-size: 12.5px; color: var(--iteshu-gold); font-weight: 600; line-height: 1.5; }
+    .prog p.obj { font-size: 13px; color: rgba(255,255,255,.85); line-height: 1.5; margin: 0; }
     .chip {
       display: inline-block; background: rgba(188,149,91,.15); border: 1px solid rgba(188,149,91,.45);
-      color: var(--iteshu-gold); border-radius: 20px; padding: .1em .7em; font-size: .42em; font-weight: 700;
-      margin: .1em .2em .1em 0;
+      color: var(--iteshu-gold); border-radius: 20px; padding: .2em .8em; font-size: 12px; font-weight: 700;
+      white-space: nowrap;
     }
+    .chips { display: flex; flex-wrap: wrap; gap: .4em; margin-top: .45em; }
 
     /* Listas con iconos */
     .items { list-style: none; margin: 0; padding: 0; text-align: left; }
@@ -109,7 +111,9 @@
     .reveal .progress { color: var(--iteshu-gold); height: 4px; }
     .reveal .controls { color: var(--iteshu-gold); }
     .reveal .slide-number { background: rgba(255,255,255,.08); color: var(--iteshu-gold); font-size: 12px; border-radius: 4px; padding: .1em .5em; }
-    .reveal section { padding: 0 5vw; }
+    .reveal section { padding: 0; }
+    /* Contenido acotado y centrado en cualquier pantalla */
+    .reveal .slides > section > * { max-width: min(92vw, 980px); margin-left: auto; margin-right: auto; }
   </style>
 </head>
 <body>
@@ -129,7 +133,7 @@
         <strong class="gold">nueva Maestría en Desarrollo Regional e Innovación Tecnológica</strong> ·
         desarrollo sustentable y transferencia tecnológica.
       </p>
-      <div class="grid3 fragment" data-fragment-index="2" style="max-width:34em; margin:1.4em auto 0;">
+      <div class="grid3 fragment" data-fragment-index="2" style="max-width:26em; margin:1em auto 0;">
         <div class="card" style="text-align:center;"><p><strong style="color:var(--iteshu-gold); font-size:1.6em;">9</strong><br>programas</p></div>
         <div class="card" style="text-align:center;"><p><strong style="color:var(--iteshu-gold); font-size:1.6em;">2026</strong><br>nueva maestría</p></div>
         <div class="card" style="text-align:center;"><p><strong style="color:var(--iteshu-gold); font-size:1.6em;">3+</strong><br>acreditaciones CACEI</p></div>
@@ -196,7 +200,7 @@
             </div>
           </div>
           <p class="obj">Formar profesionistas capaces de diseñar, proyectar, construir e innovar equipos y sistemas mecatrónicos para el sector productivo.</p>
-          <p style="font-size:.42em; margin:.6em 0 0;"><span class="chip">9 semestres</span><span class="chip">Presencial</span><span class="chip">Inglés</span></p>
+          <div class="chips"><span class="chip">9 semestres</span><span class="chip">Presencial</span><span class="chip">Inglés</span></div>
         </div>
         <div class="card prog fragment">
           <div class="prog-head">
@@ -208,7 +212,7 @@
             </div>
           </div>
           <p class="obj">Formar líderes analíticos y creativos capaces de diseñar, implementar y administrar infraestructura computacional para aportar soluciones.</p>
-          <p style="font-size:.42em; margin:.6em 0 0;"><span class="chip">9 semestres</span><span class="chip">Presencial</span><span class="chip">Inglés</span></p>
+          <div class="chips"><span class="chip">9 semestres</span><span class="chip">Presencial</span><span class="chip">Inglés</span></div>
         </div>
         <div class="card prog fragment">
           <div class="prog-head">
@@ -220,7 +224,7 @@
             </div>
           </div>
           <p class="obj">Contribuir a la gestión de empresas e innovación de procesos; diseñar e implementar sistemas estratégicos de negocios optimizando recursos.</p>
-          <p style="font-size:.42em; margin:.6em 0 0;"><span class="chip">9 semestres</span><span class="chip">Presencial / Virtual</span><span class="chip">Inglés</span></p>
+          <div class="chips"><span class="chip">9 semestres</span><span class="chip">Presencial / Virtual</span><span class="chip">Inglés</span></div>
         </div>
         <div class="card prog fragment">
           <div class="prog-head">
@@ -231,7 +235,7 @@
             </div>
           </div>
           <p class="obj">Formar profesionistas competentes en la creación, dirección e innovación de organizaciones, con visión emprendedora, ética y responsabilidad social.</p>
-          <p style="font-size:.42em; margin:.6em 0 0;"><span class="chip">9 semestres</span><span class="chip">Presencial</span><span class="chip">Inglés</span></p>
+          <div class="chips"><span class="chip">9 semestres</span><span class="chip">Presencial</span><span class="chip">Inglés</span></div>
         </div>
       </div>
       <aside class="notes">
@@ -257,7 +261,7 @@
             </div>
           </div>
           <p class="obj">Intervenir en proyectos de generación, transformación y almacenamiento de energía de fuentes renovables y uso eficiente.</p>
-          <p style="font-size:.42em; margin:.6em 0 0;"><span class="chip">9 semestres</span><span class="chip">Presencial</span></p>
+          <div class="chips"><span class="chip">9 semestres</span><span class="chip">Presencial</span></div>
         </div>
         <div class="card prog fragment">
           <div class="prog-head">
@@ -269,7 +273,7 @@
             </div>
           </div>
           <p class="obj">Planeación del desarrollo regional en el contexto de la sustentabilidad, con proyectos reales junto a productores de la región.</p>
-          <p style="font-size:.42em; margin:.6em 0 0;"><span class="chip">9 semestres</span><span class="chip">Presencial</span></p>
+          <div class="chips"><span class="chip">9 semestres</span><span class="chip">Presencial</span></div>
         </div>
         <div class="card prog fragment">
           <div class="prog-head">
@@ -280,7 +284,7 @@
             </div>
           </div>
           <p class="obj">Diseñar, implementar, mejorar e innovar sistemas productivos y de servicios con visión sistémica y capacidad analítica.</p>
-          <p style="font-size:.42em; margin:.6em 0 0;"><span class="chip">9 semestres</span><span class="chip">Presencial</span></p>
+          <div class="chips"><span class="chip">9 semestres</span><span class="chip">Presencial</span></div>
         </div>
       </div>
       <p class="fragment" style="margin-top:1.2em; font-size:.52em; color:rgba(255,255,255,.75);">
@@ -299,7 +303,7 @@
       <p class="tag">Oferta educativa · Áreas creativas</p>
       <h2>Arquitectura y Gastronomía</h2>
       <p class="sub" style="margin-bottom:1.1em;">Las áreas donde la identidad se encuentra con el emprendimiento.</p>
-      <div class="grid2" style="max-width:46em; margin:0 auto;">
+      <div class="grid2" style="max-width:36em; margin:0 auto;">
         <div class="card prog fragment" style="padding:1.1em;">
           <div class="prog-head">
             <img src="assets/img/arquitectura.jpg" alt="Arquitectura" style="width:100px;height:100px;">
@@ -370,7 +374,7 @@
       <p class="tag">Diagnóstico · 1/2</p>
       <h2>La web actual: problemas concretos</h2>
       <p class="sub" style="margin-bottom:1em;">iteshu.edu.mx visto con ojos de aspirante.</p>
-      <div class="grid2" style="max-width:46em; margin:0 auto;">
+      <div class="grid2" style="max-width:36em; margin:0 auto;">
         <div class="card" style="border-left:4px solid #cc181e;">
           <ul class="items">
             <li class="fragment"><span class="ic no">✗</span><span><strong>Portada llena de licitaciones</strong> — el aspirante no sabe en 5 segundos qué se estudia.</span></li>
@@ -399,7 +403,7 @@
       <p class="tag">Diagnóstico · 2/2 · La propuesta</p>
       <h2>La propuesta resuelve todo</h2>
       <p class="sub" style="margin-bottom:1em;">Mismos colores, mismo logo y mismas fotografías. <span class="gold">Nueva claridad.</span></p>
-      <div class="grid2" style="max-width:46em; margin:0 auto;">
+      <div class="grid2" style="max-width:36em; margin:0 auto;">
         <div class="card" style="border-left:4px solid var(--iteshu-green);">
           <ul class="items">
             <li class="fragment"><span class="ic yes">✓</span><span><strong>Hero con foto real + CTA único</strong> "Quiero ser aspirante".</span></li>
