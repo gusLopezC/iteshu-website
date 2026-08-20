@@ -1,0 +1,11 @@
+# Evidencia local de investigación (no se publica en Pages)
+research/
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.swp
+
+# Nodos/logs
+node_modules/
+*.log

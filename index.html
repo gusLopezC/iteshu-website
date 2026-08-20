@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITESHU · Instituto Tecnológico Superior de Huichapan</title>
+  <meta name="description" content="Prototipo web ITESHU: 9 programas de ingeniería, arquitectura y gastronomía + nueva Maestría en Desarrollo Regional e Innovación Tecnológica. Desarrollo sustentable y transferencia tecnológica.">
+  <meta name="theme-color" content="#1B396A">
+
+  <!-- Tipografía: Playfair Display (titulares, autoridad) + Inter (texto) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+
+  <!-- Precarga del logo institucional real -->
+  <link rel="preconnect" href="https://www.iteshu.edu.mx">
+
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            /* ===== Paleta 100% institucional ITESHU (extraída de iteshu.edu.mx) ===== */
+            iteshu: {
+              primary: '#1B396A',   // azul institucional (navbar/footer oficial)
+              navy:    '#222851',   // azul marino (theme oficial + logo #000e51)
+              dark:    '#092432',   // azul-verde oscuro (sección oferta del sitio real)
+              gold:    '#bc955b',   // dorado (borde del navbar oficial)
+              green:   '#006e4d',   // verde (acento del logo oficial)
+              vino:    '#611232',   // vino (Gobierno del Estado de Hidalgo)
+              gobmx:   '#0b231e',   // verde oscuro (barra gob.mx del sitio real)
+              light:   '#f8f8f8',   // fondo gris claro (secciones del sitio real)
+              line:    '#d6d3d3',   // gris de bordes (footer real)
+              muted:   '#555555'    // gris de texto (body del sitio real)
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
+            display: ['Playfair Display', 'Georgia', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ============================================================
+       Sistema de animaciones del prototipo
+       - Solo transform/opacity (render-friendly)
+       - Stagger con variable CSS --d (delay en ms)
+       - Respeta prefers-reduced-motion
+       ============================================================ */
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; color: #333; }
+    section { scroll-margin-top: 88px; }
+
+    /* Enfoque visible para accesibilidad */
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid #bc955b;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* ---------- Entradas (se disparan al cargar, sin JS) ---------- */
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes riseLeft {
+      from { opacity: 0; transform: translateX(-36px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes riseRight {
+      from { opacity: 0; transform: translateX(36px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(.9); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); }
+      to   { transform: none; }
+    }
+    .anim-rise, .anim-rise-left, .anim-rise-right, .anim-zoom {
+      opacity: 0;
+      animation-fill-mode: both;
+      animation-timing-function: cubic-bezier(.22,.61,.36,1);
+    }
+    .anim-rise       { animation-name: rise;      animation-duration: .85s; }
+    .anim-rise-left  { animation-name: riseLeft;  animation-duration: .9s;  }
+    .anim-rise-right { animation-name: riseRight; animation-duration: .9s;  }
+    .anim-zoom       { animation-name: zoomIn;    animation-duration: 1s;   }
+    .anim-rise, .anim-rise-left, .anim-rise-right, .anim-zoom { animation-delay: var(--d, 0ms); }
+    header#header { animation: slideDown .6s cubic-bezier(.22,.61,.36,1); }
+
+    /* ---------- Aparición al hacer scroll (IntersectionObserver) ---------- */
+    .reveal, .reveal-left, .reveal-right, .reveal-zoom, .reveal-fade {
+      opacity: 0;
+      transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1);
+      transition-delay: var(--d, 0ms);
+      will-change: opacity, transform;
+    }
+    .reveal      { transform: translateY(30px); }
+    .reveal-left { transform: translateX(-36px); }
+    .reveal-right{ transform: translateX(36px); }
+    .reveal-zoom { transform: scale(.92); }
+    .reveal-fade { transform: none; }
+    .reveal.visible, .reveal-left.visible, .reveal-right.visible,
+    .reveal-zoom.visible, .reveal-fade.visible { opacity: 1; transform: none; }
+
+    /* ---------- Card hover: elevación suave estilo UAQ ---------- */
+    .card-hover { transition: transform .3s cubic-bezier(.22,.61,.36,1), box-shadow .3s ease; }
+    .card-hover:hover { transform: translateY(-8px); box-shadow: 0 22px 46px -16px rgba(9,36,50,.4); }
+
+    /* ---------- Botones con brillo (shine) ---------- */
+    .btn-shine { position: relative; overflow: hidden; isolation: isolate; }
+    .btn-shine::after {
+      content: ""; position: absolute; top: 0; left: -130%; width: 55%; height: 100%;
+      background: linear-gradient(105deg, transparent, rgba(255,255,255,.45), transparent);
+      transform: skewX(-20deg); transition: left .65s ease; z-index: 1; pointer-events: none;
+    }
+    .btn-shine:hover::after { left: 150%; }
+
+    /* ---------- Flotación suave (badges, botón WhatsApp) ---------- */
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-9px); }
+    }
+    .floaty { animation: floaty 4.5s ease-in-out infinite; }
+    @keyframes pulseRing {
+      0%   { box-shadow: 0 0 0 0 rgba(37,211,102,.45); }
+      70%  { box-shadow: 0 0 0 16px rgba(37,211,102,0); }
+      100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+    }
+    .pulse-ring { animation: pulseRing 2.6s ease-out infinite; }
+
+    /* ---------- Blobs de color en el hero ---------- */
+    @keyframes drift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50%      { transform: translate(34px, -26px) scale(1.18); }
+    }
+    .blob { position: absolute; border-radius: 9999px; filter: blur(70px); opacity: .3; pointer-events: none; animation: drift 16s ease-in-out infinite; }
+
+    /* ---------- Marquee de acreditaciones ---------- */
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .marquee-track { display: flex; width: max-content; animation: marquee 30s linear infinite; }
+    .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+    .marquee-item { filter: grayscale(1); opacity: .75; transition: filter .4s ease, opacity .4s ease; }
+    .marquee-item:hover { filter: grayscale(0); opacity: 1; }
+
+    /* ---------- Header con sombra al hacer scroll ---------- */
+    #header.scrolled { box-shadow: 0 6px 24px -12px rgba(9,36,50,.35); }
+
+    /* Línea dorada institucional bajo el header (mismo detalle que el sitio real) */
+    .gold-underline { border-bottom: 4px solid #bc955b; }
+
+    /* ---------- Mega-menú "Oferta Educativa" ---------- */
+    .nav-drop .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%; left: 50%; transform: translateX(-50%);
+      min-width: 640px;
+    }
+    .nav-drop:hover .dropdown,
+    .nav-drop:focus-within .dropdown,
+    .nav-drop.open .dropdown { display: block; }
+    .nav-drop .chevron { transition: transform .3s ease; }
+    .nav-drop.open .chevron, .nav-drop:hover .chevron { transform: rotate(180deg); }
+    @media (max-width: 1023px) { .nav-drop .dropdown { position: static; transform: none; min-width: 0; } }
+    .drop-link { transition: color .2s ease, padding-left .2s ease; }
+    .drop-link:hover { color: #bc955b; padding-left: 6px; }
+
+    /* ---------- Chips de programas (hero, marquee) ---------- */
+    .chip-track { display: flex; width: max-content; animation: marquee 40s linear infinite; }
+    .chips-wrap:hover .chip-track { animation-play-state: paused; }
+
+    /* ---------- Filtros de oferta educativa ---------- */
+    .filter-btn { transition: all .25s ease; }
+    .filter-btn.active { background: #bc955b; color: #092432; border-color: #bc955b; }
+    .filter-card { transition: opacity .35s ease, transform .35s ease; }
+
+    /* ---------- Tarjetas de carrera: imagen con degradado ---------- */
+    .card-img-wrap { position: relative; overflow: hidden; }
+    .card-img-wrap::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(9,36,50,.55), transparent 45%);
+      pointer-events: none;
+    }
+
+    /* Respeta preferencia de movimiento reducido */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .anim-rise, .anim-rise-left, .anim-rise-right, .anim-zoom,
+      .reveal, .reveal-left, .reveal-right, .reveal-zoom, .reveal-fade {
+        opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important;
+      }
+      .floaty, .blob, .pulse-ring, .marquee-track, header#header { animation: none !important; }
+      .card-hover { transition: none; }
+    }
+  </style>
+</head>
+
+<body class="bg-white antialiased">
+
+  <!-- ============ BARRA DE PROGRESO DE SCROLL ============ -->
+  <div id="progressBar" class="fixed top-0 left-0 z-[70] h-1 bg-iteshu-gold w-0" role="progressbar" aria-label="Progreso de lectura"></div>
+
+  <!-- ============ ACCESIBILIDAD: salto de navegación ============ -->
+  <a href="#inicio" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-iteshu-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-md">
+    Saltar al contenido principal
+  </a>
+
+  <!-- ============ BARRA SUPERIOR (estilo barra gob.mx del sitio real) ============ -->
+  <div class="bg-iteshu-gobmx text-white text-xs hidden md:block">
+    <div class="max-w-7xl mx-auto px-4 py-1.5 flex items-center justify-between">
+      <p class="tracking-wide">TecNM · Tecnológico Nacional de México · Gobierno de México</p>
+      <div class="flex items-center gap-5">
+        <a href="https://www.iteshu.edu.mx/iteshu/content/transparencia.php" target="_blank" rel="noopener" class="hover:text-iteshu-gold transition-colors">Transparencia</a>
+        <a href="https://www.iteshu.edu.mx/iteshu/content/2023/Aviso_de_privacidad.pdf" target="_blank" rel="noopener" class="hover:text-iteshu-gold transition-colors">Aviso de Privacidad</a>
+        <span class="text-iteshu-line">Horario: Lun–Vie 8:30 a 17:00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ HEADER STICKY ============ -->
+  <header id="header" class="sticky top-0 z-50 bg-white gold-underline transition-shadow duration-300">
+    <div class="max-w-7xl mx-auto px-4 h-[72px] flex items-center justify-between gap-4">
+      <!-- Logo oficial -->
+      <a href="#inicio" class="flex items-center shrink-0" aria-label="ITESHU — inicio">
+        <img src="https://www.iteshu.edu.mx/iteshu/images/header/iteshu.png"
+             alt="Logo Instituto Tecnológico Superior de Huichapan"
+             width="171" height="52" class="h-11 w-auto" loading="eager">
+      </a>
+
+      <!-- Navegación escritorio -->
+      <nav class="hidden lg:flex items-center gap-5 xl:gap-6" aria-label="Navegación principal">
+        <a href="#inicio" class="text-sm font-semibold text-iteshu-primary hover:text-iteshu-gold transition-colors">Inicio</a>
+
+        <!-- Mega-menú: Oferta Educativa -->
+        <div class="nav-drop relative" id="ofertaDrop">
+          <button id="ofertaDropBtn" type="button" aria-haspopup="true" aria-expanded="false"
+                  class="inline-flex items-center gap-1.5 text-sm font-semibold text-iteshu-primary hover:text-iteshu-gold transition-colors cursor-pointer">
+            Oferta Educativa
+            <svg class="chevron w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="dropdown bg-white rounded-b-2xl shadow-2xl border-t-4 border-iteshu-gold p-6">
+            <div class="grid grid-cols-3 gap-8">
+              <div>
+                <p class="text-[11px] font-extrabold uppercase tracking-widest text-iteshu-muted mb-3">Ingenierías</p>
+                <ul class="space-y-2.5 text-sm">
+                  <li><a class="drop-link font-semibold text-iteshu-dark" href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/imt.php" target="_blank" rel="noopener">Mecatrónica</a></li>
+                  <li><a class="drop-link font-semibold text-iteshu-dark" href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/isc.php" target="_blank" rel="noopener">Sistemas Computacionales</a></li>
+                  <li><a class="drop-link font-semibold text-iteshu-dark" href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/igem.php" target="_blank" rel="noopener">Gestión Empresarial</a></li>
+                  <li><a class="drop-link font-semibold text-iteshu-dark" href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/admin.php" target="_blank" rel="noopener">Administración</a></li>
+                  <li><a class="drop-link font-semibold text-iteshu-dark" href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/energias.php" target="_blank" rel="noopener">Energías Renovables</a></li>
+                  <li><a class="drop-link font-semibold text-iteshu-dark" href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/iias.php" target="_blank" rel="noopener">Innovación Agrícola Sustentable</a></li>
+                  <li><a class="drop-link font-semibold text-iteshu-dark" href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/ii.php" target="_blank" rel="noopener">Industrial</a></li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-[11px] font-extrabold uppercase tracking-widest text-iteshu-muted mb-3">Arquitectura y Gastronomía</p>
+                <ul class="space-y-2.5 text-sm">
+                  <li><a class="drop-link font-semibold text-iteshu-dark" href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/arq.php" target="_blank" rel="noopener">Arquitectura</a></li>
+                  <li><a class="drop-link font-semibold text-iteshu-dark" href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/gastro.php" target="_blank" rel="noopener">Gastronomía</a></li>
+                </ul>
+                <p class="text-[11px] font-extrabold uppercase tracking-widest text-iteshu-muted mb-3 mt-6">Modalidades y sedes</p>
+                <ul class="space-y-2.5 text-sm">
+                  <li><a class="drop-link font-semibold text-iteshu-dark" href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/mixta/mixta.php" target="_blank" rel="noopener">Modalidad mixta</a></li>
+                  <li><a class="drop-link font-semibold text-iteshu-dark" href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/unidad/unidad.php" target="_blank" rel="noopener">Espacio académico Tecozautla</a></li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-[11px] font-extrabold uppercase tracking-widest text-iteshu-muted mb-3">Posgrado</p>
+                <ul class="space-y-2.5 text-sm">
+                  <li><a class="drop-link font-semibold text-iteshu-dark" href="#maestria">Maestría en Desarrollo Regional e Innovación Tecnológica <span class="bg-iteshu-gold text-iteshu-dark text-[10px] font-extrabold px-1.5 py-0.5 rounded ml-1">NUEVA</span></a></li>
+                  <li><a class="drop-link font-semibold text-iteshu-dark" href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/posgrado/maestria.php" target="_blank" rel="noopener">Maestría en Ingeniería Mecatrónica</a></li>
+                  <li><a class="drop-link font-semibold text-iteshu-dark" href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/posgrado/Posgrado.php" target="_blank" rel="noopener">Ver todos los posgrados</a></li>
+                </ul>
+              </div>
+            </div>
+            <a href="#oferta" class="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-iteshu-primary hover:text-iteshu-gold transition-colors">
+              Ver toda la oferta educativa
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <a href="#admision" class="text-sm font-semibold text-iteshu-primary hover:text-iteshu-gold transition-colors">Admisión</a>
+        <a href="#campus" class="text-sm font-semibold text-iteshu-primary hover:text-iteshu-gold transition-colors">Campus</a>
+        <a href="#noticias" class="text-sm font-semibold text-iteshu-primary hover:text-iteshu-gold transition-colors">Noticias</a>
+        <a href="#contacto" class="text-sm font-semibold text-iteshu-primary hover:text-iteshu-gold transition-colors">Contacto</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <!-- CTA principal -->
+        <a href="https://fichas.iteshu.edu.mx/" target="_blank" rel="noopener"
+           class="btn-shine hidden sm:inline-flex items-center bg-iteshu-primary hover:bg-iteshu-navy text-white font-bold text-sm px-5 py-2.5 rounded-md transition-colors">
+          Quiero ser aspirante
+        </a>
+
+        <!-- Botón hamburguesa (móvil) -->
+        <button id="menuBtn" type="button" aria-controls="mobileMenu" aria-expanded="false"
+                class="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-md text-iteshu-primary hover:bg-iteshu-light transition-colors"
+                aria-label="Abrir menú">
+          <svg id="iconOpen" class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <svg id="iconClose" class="hidden w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menú móvil desplegable -->
+    <div id="mobileMenu" class="hidden lg:hidden bg-white border-t border-iteshu-line max-h-[calc(100vh-72px)] overflow-y-auto">
+      <nav class="max-w-7xl mx-auto px-4 py-4 flex flex-col gap-1" aria-label="Navegación móvil">
+        <a href="#inicio" class="mobile-link py-3 px-3 rounded-md font-semibold text-iteshu-primary hover:bg-iteshu-light">Inicio</a>
+
+        <details class="group">
+          <summary class="py-3 px-3 rounded-md font-semibold text-iteshu-primary hover:bg-iteshu-light cursor-pointer list-none flex items-center justify-between [&::-webkit-details-marker]:hidden">
+            Oferta Educativa
+            <svg class="w-4 h-4 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="pl-3 pb-3 space-y-2 text-sm">
+            <a href="#oferta" class="mobile-link block py-2 px-3 rounded-md font-bold text-iteshu-gold hover:bg-iteshu-light">Ver toda la oferta educativa</a>
+            <p class="text-[11px] font-extrabold uppercase tracking-widest text-iteshu-muted px-3 pt-2">Ingenierías</p>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/imt.php" target="_blank" rel="noopener" class="mobile-link block py-2 px-3 rounded-md font-semibold text-iteshu-dark hover:bg-iteshu-light">Mecatrónica</a>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/isc.php" target="_blank" rel="noopener" class="mobile-link block py-2 px-3 rounded-md font-semibold text-iteshu-dark hover:bg-iteshu-light">Sistemas Computacionales</a>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/igem.php" target="_blank" rel="noopener" class="mobile-link block py-2 px-3 rounded-md font-semibold text-iteshu-dark hover:bg-iteshu-light">Gestión Empresarial</a>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/admin.php" target="_blank" rel="noopener" class="mobile-link block py-2 px-3 rounded-md font-semibold text-iteshu-dark hover:bg-iteshu-light">Administración</a>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/energias.php" target="_blank" rel="noopener" class="mobile-link block py-2 px-3 rounded-md font-semibold text-iteshu-dark hover:bg-iteshu-light">Energías Renovables</a>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/iias.php" target="_blank" rel="noopener" class="mobile-link block py-2 px-3 rounded-md font-semibold text-iteshu-dark hover:bg-iteshu-light">Innovación Agrícola Sustentable</a>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/ii.php" target="_blank" rel="noopener" class="mobile-link block py-2 px-3 rounded-md font-semibold text-iteshu-dark hover:bg-iteshu-light">Industrial</a>
+            <p class="text-[11px] font-extrabold uppercase tracking-widest text-iteshu-muted px-3 pt-2">Arquitectura y Gastronomía</p>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/arq.php" target="_blank" rel="noopener" class="mobile-link block py-2 px-3 rounded-md font-semibold text-iteshu-dark hover:bg-iteshu-light">Arquitectura</a>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/gastro.php" target="_blank" rel="noopener" class="mobile-link block py-2 px-3 rounded-md font-semibold text-iteshu-dark hover:bg-iteshu-light">Gastronomía</a>
+            <p class="text-[11px] font-extrabold uppercase tracking-widest text-iteshu-muted px-3 pt-2">Posgrado</p>
+            <a href="#maestria" class="mobile-link block py-2 px-3 rounded-md font-semibold text-iteshu-dark hover:bg-iteshu-light">Maestría en Desarrollo Regional e Innovación Tecnológica</a>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/posgrado/maestria.php" target="_blank" rel="noopener" class="mobile-link block py-2 px-3 rounded-md font-semibold text-iteshu-dark hover:bg-iteshu-light">Maestría en Ingeniería Mecatrónica</a>
+          </div>
+        </details>
+
+        <a href="#admision" class="mobile-link py-3 px-3 rounded-md font-semibold text-iteshu-primary hover:bg-iteshu-light">Admisión</a>
+        <a href="#campus" class="mobile-link py-3 px-3 rounded-md font-semibold text-iteshu-primary hover:bg-iteshu-light">Campus</a>
+        <a href="#noticias" class="mobile-link py-3 px-3 rounded-md font-semibold text-iteshu-primary hover:bg-iteshu-light">Noticias</a>
+        <a href="#contacto" class="mobile-link py-3 px-3 rounded-md font-semibold text-iteshu-primary hover:bg-iteshu-light">Contacto</a>
+
+        <div class="my-2 border-t border-iteshu-line"></div>
+        <p class="text-[11px] font-extrabold uppercase tracking-widest text-iteshu-muted px-3 pt-1">Institucional</p>
+        <a href="https://www.iteshu.edu.mx/iteshu/content/identidad/identidad.php" target="_blank" rel="noopener" class="mobile-link py-3 px-3 rounded-md font-semibold text-iteshu-primary hover:bg-iteshu-light">Identidad</a>
+        <a href="https://www.iteshu.edu.mx/iteshu/content/serviciosalumno/serviciosalumno.php" target="_blank" rel="noopener" class="mobile-link py-3 px-3 rounded-md font-semibold text-iteshu-primary hover:bg-iteshu-light">Servicios al alumno</a>
+        <a href="https://www.iteshu.edu.mx/iteshu/content/seresc/sescolares.php" target="_blank" rel="noopener" class="mobile-link py-3 px-3 rounded-md font-semibold text-iteshu-primary hover:bg-iteshu-light">Servicios Escolares</a>
+        <a href="https://www.iteshu.edu.mx/iteshu/content/vinculacion/vinculacion.php" target="_blank" rel="noopener" class="mobile-link py-3 px-3 rounded-md font-semibold text-iteshu-primary hover:bg-iteshu-light">Vinculación</a>
+        <a href="https://www.iteshu.edu.mx/iteshu/content/armonizacion.php" target="_blank" rel="noopener" class="mobile-link py-3 px-3 rounded-md font-semibold text-iteshu-primary hover:bg-iteshu-light">CONAC/LDF</a>
+        <a href="https://www.iteshu.edu.mx/iteshu/content/transparencia.php" target="_blank" rel="noopener" class="mobile-link py-3 px-3 rounded-md font-semibold text-iteshu-primary hover:bg-iteshu-light">Transparencia</a>
+
+        <a href="https://fichas.iteshu.edu.mx/" target="_blank" rel="noopener"
+           class="btn-shine mobile-link mt-3 inline-flex items-center justify-center bg-iteshu-primary hover:bg-iteshu-navy text-white font-bold text-sm px-5 py-3 rounded-md transition-colors">
+          Quiero ser aspirante
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ MENÚ INSTITUCIONAL (secciones reales del sitio oficial) ============ -->
+  <div class="hidden lg:block bg-white border-b border-iteshu-line/60">
+    <div class="max-w-7xl mx-auto px-4 h-9 flex items-center justify-between">
+      <div class="flex items-center gap-5 text-[12px] font-semibold uppercase tracking-wider">
+        <a href="https://www.iteshu.edu.mx/iteshu/content/identidad/identidad.php" target="_blank" rel="noopener" class="text-iteshu-muted hover:text-iteshu-primary transition-colors">Identidad</a>
+        <span class="text-iteshu-line" aria-hidden="true">·</span>
+        <a href="https://www.iteshu.edu.mx/iteshu/content/serviciosalumno/serviciosalumno.php" target="_blank" rel="noopener" class="text-iteshu-muted hover:text-iteshu-primary transition-colors">Servicios al alumno</a>
+        <span class="text-iteshu-line" aria-hidden="true">·</span>
+        <a href="https://www.iteshu.edu.mx/iteshu/content/seresc/sescolares.php" target="_blank" rel="noopener" class="text-iteshu-muted hover:text-iteshu-primary transition-colors">Servicios Escolares</a>
+        <span class="text-iteshu-line" aria-hidden="true">·</span>
+        <a href="https://www.iteshu.edu.mx/iteshu/content/vinculacion/vinculacion.php" target="_blank" rel="noopener" class="text-iteshu-muted hover:text-iteshu-primary transition-colors">Vinculación</a>
+        <span class="text-iteshu-line" aria-hidden="true">·</span>
+        <a href="https://www.iteshu.edu.mx/iteshu/content/armonizacion.php" target="_blank" rel="noopener" class="text-iteshu-muted hover:text-iteshu-primary transition-colors">CONAC/LDF</a>
+        <span class="text-iteshu-line" aria-hidden="true">·</span>
+        <a href="https://www.iteshu.edu.mx/iteshu/content/transparencia.php" target="_blank" rel="noopener" class="text-iteshu-muted hover:text-iteshu-primary transition-colors">Transparencia</a>
+      </div>
+      <a href="https://www.iteshu.edu.mx/iteshu/" target="_blank" rel="noopener" class="text-[12px] font-bold text-iteshu-gold hover:text-iteshu-dark transition-colors">Sitio oficial →</a>
+    </div>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <section id="inicio" class="relative bg-iteshu-primary overflow-hidden">
+    <!-- Blobs de color animados (fondo, sin interferir con contenido) -->
+    <div class="blob w-96 h-96 -top-20 -left-24" style="background:#bc955b; --d:0s;" aria-hidden="true"></div>
+    <div class="blob w-[28rem] h-[28rem] top-1/3 -right-32" style="background:#006e4d; animation-delay:4s;" aria-hidden="true"></div>
+    <div class="blob w-72 h-72 bottom-0 left-1/3" style="background:#222851; animation-delay:8s;" aria-hidden="true"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 py-16 md:py-24 lg:py-28 grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Texto del hero -->
+      <div>
+        <p class="anim-rise inline-flex items-center gap-2 text-iteshu-gold font-bold uppercase tracking-[0.2em] text-xs md:text-sm mb-5" style="--d:120ms">
+          <span class="h-px w-8 bg-iteshu-gold" aria-hidden="true"></span>
+          Desarrollo sustentable · Transferencia tecnológica
+        </p>
+        <h1 class="anim-rise font-display text-white font-bold text-[2.6rem] md:text-6xl lg:text-[4rem] leading-[1.06] mb-6" style="--d:240ms">
+          El motor tecnológico y sustentable de la región
+        </h1>
+        <p class="anim-rise text-white/85 text-lg md:text-xl leading-relaxed mb-9 max-w-xl" style="--d:360ms">
+          Nueve programas de ingeniería, arquitectura y gastronomía y una nueva
+          <strong class="text-white">Maestría en Desarrollo Regional e Innovación Tecnológica</strong>:
+          innovación con impacto real en Hidalgo y sus alrededores.
+        </p>
+
+        <div class="anim-rise flex flex-col sm:flex-row gap-4" style="--d:480ms">
+          <a href="https://fichas.iteshu.edu.mx/" target="_blank" rel="noopener"
+             class="btn-shine group inline-flex items-center justify-center bg-iteshu-gold hover:bg-white text-iteshu-dark font-extrabold text-base px-8 py-4 rounded-md transition-colors shadow-lg">
+            Quiero ser aspirante
+            <svg class="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/>
+            </svg>
+          </a>
+          <a href="#oferta"
+             class="inline-flex items-center justify-center border-2 border-white/70 text-white hover:bg-white hover:text-iteshu-primary font-semibold text-base px-8 py-4 rounded-md transition-colors">
+            Ver oferta educativa
+          </a>
+        </div>
+
+        <!-- Datos clave (contadores animados) -->
+        <dl id="heroStats" class="anim-rise mt-10 grid grid-cols-3 gap-4 max-w-md" style="--d:620ms">
+          <div>
+            <dt class="sr-only">Programas</dt>
+            <dd class="text-white font-extrabold text-3xl tabular-nums"><span data-count="9" data-suffix="">0</span></dd>
+            <dd class="text-white/70 text-xs md:text-sm mt-1">programas de licenciatura</dd>
+          </div>
+          <div class="border-l border-white/20 pl-4">
+            <dt class="sr-only">Nueva maestría</dt>
+            <dd class="text-white font-extrabold text-3xl tabular-nums"><span data-count="2026" data-suffix="">0</span></dd>
+            <dd class="text-white/70 text-xs md:text-sm mt-1">nueva maestría</dd>
+          </div>
+          <div class="border-l border-white/20 pl-4">
+            <dt class="sr-only">Acreditaciones</dt>
+            <dd class="text-white font-extrabold text-3xl tabular-nums"><span data-count="3" data-suffix="+">0</span></dd>
+            <dd class="text-white/70 text-xs md:text-sm mt-1">acreditaciones CACEI</dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Imagen real de ITESHU (foto oficial de la convocatoria de la nueva maestría) -->
+      <div class="anim-zoom relative hidden lg:block" style="--d:500ms">
+        <div class="absolute -inset-4 rounded-3xl border-2 border-iteshu-gold/60" aria-hidden="true"></div>
+        <img src="https://www.iteshu.edu.mx/iteshu/images/noticias/2026/Junio/023.jpg"
+             alt="Fotografía oficial del ITESHU: evento de lanzamiento de la Maestría en Desarrollo Regional e Innovación Tecnológica"
+             width="1890" height="1417"
+             class="relative rounded-2xl object-cover w-full h-[440px] shadow-2xl" loading="eager" decoding="async">
+        <div class="floaty absolute -bottom-5 -left-5 bg-iteshu-gold text-iteshu-dark rounded-lg px-4 py-3 shadow-xl">
+          <p class="font-extrabold text-sm leading-tight">Nueva Maestría<br><span class="font-semibold">convocatoria abierta</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Banda de programas (chips en movimiento, estilo Tec/Anáhuac) -->
+    <div class="relative border-t border-white/15 py-5 overflow-hidden chips-wrap" aria-label="Programas del ITESHU">
+      <div class="chip-track items-center gap-3 pr-3">
+        <span class="chip text-white/80 text-[11px] font-bold uppercase tracking-[0.25em] shrink-0">Programas</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90 hover:bg-white/10 transition-colors">Ing. Mecatrónica</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90 hover:bg-white/10 transition-colors">Ing. en Sistemas Computacionales</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90 hover:bg-white/10 transition-colors">Ing. en Gestión Empresarial</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90 hover:bg-white/10 transition-colors">Ing. en Administración</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90 hover:bg-white/10 transition-colors">Ing. en Energías Renovables</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90 hover:bg-white/10 transition-colors">Ing. en Innovación Agrícola Sustentable</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90 hover:bg-white/10 transition-colors">Ing. Industrial</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90 hover:bg-white/10 transition-colors">Arquitectura</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90 hover:bg-white/10 transition-colors">Gastronomía</span>
+        <span class="chip shrink-0 rounded-full bg-iteshu-gold text-iteshu-dark px-4 py-1.5 text-sm font-extrabold">★ Maestría en Desarrollo Regional</span>
+        <!-- Duplicado para loop continuo -->
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90" aria-hidden="true">Ing. Mecatrónica</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90" aria-hidden="true">Ing. en Sistemas Computacionales</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90" aria-hidden="true">Ing. en Gestión Empresarial</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90" aria-hidden="true">Ing. en Administración</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90" aria-hidden="true">Ing. en Energías Renovables</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90" aria-hidden="true">Ing. en Innovación Agrícola Sustentable</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90" aria-hidden="true">Ing. Industrial</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90" aria-hidden="true">Arquitectura</span>
+        <span class="chip shrink-0 rounded-full border border-white/25 px-4 py-1.5 text-sm font-semibold text-white/90" aria-hidden="true">Gastronomía</span>
+        <span class="chip shrink-0 rounded-full bg-iteshu-gold text-iteshu-dark px-4 py-1.5 text-sm font-extrabold" aria-hidden="true">★ Maestría en Desarrollo Regional</span>
+      </div>
+    </div>
+
+    <!-- Onda inferior -->
+    <svg class="block w-full h-8 md:h-12 text-white" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="currentColor" d="M0,32 C360,72 1080,-8 1440,32 L1440,60 L0,60 Z"></path>
+    </svg>
+  </section>
+
+  <!-- ============ MARQUEE DE ACREDITACIONES (logos reales del sitio) ============ -->
+  <section class="bg-iteshu-light border-y border-iteshu-line/60 py-5 overflow-hidden" aria-label="Acreditaciones y certificaciones del ITESHU">
+    <div class="marquee-wrap">
+      <div class="marquee-track items-center gap-14 pr-14">
+        <!-- Bloque 1 -->
+        <p class="text-iteshu-muted text-xs font-bold uppercase tracking-[0.25em] shrink-0">Acreditaciones y certificaciones</p>
+        <img src="https://www.iteshu.edu.mx/iteshu/images/reconocimiento/caceca.png" alt="CACECA" width="120" height="60" loading="lazy" class="marquee-item h-12 w-auto shrink-0" style="--d:0s">
+        <img src="https://www.iteshu.edu.mx/iteshu/images/reconocimiento/cacei.png" alt="CACEI" width="120" height="60" loading="lazy" class="marquee-item h-12 w-auto shrink-0">
+        <img src="https://www.iteshu.edu.mx/iteshu/images/reconocimiento/oshas.png" alt="OSHAS" width="120" height="60" loading="lazy" class="marquee-item h-12 w-auto shrink-0">
+        <img src="https://www.iteshu.edu.mx/iteshu/images/reconocimiento/anfei.png" alt="ANFEI" width="120" height="60" loading="lazy" class="marquee-item h-12 w-auto shrink-0">
+        <img src="https://www.iteshu.edu.mx/iteshu/images/reconocimiento/anuies.png" alt="ANUIES" width="120" height="60" loading="lazy" class="marquee-item h-12 w-auto shrink-0">
+        <!-- Bloque 2 (duplicado para loop continuo) -->
+        <p class="text-iteshu-muted text-xs font-bold uppercase tracking-[0.25em] shrink-0" aria-hidden="true">Acreditaciones y certificaciones</p>
+        <img src="https://www.iteshu.edu.mx/iteshu/images/reconocimiento/caceca.png" alt="" width="120" height="60" loading="lazy" class="marquee-item h-12 w-auto shrink-0" aria-hidden="true">
+        <img src="https://www.iteshu.edu.mx/iteshu/images/reconocimiento/cacei.png" alt="" width="120" height="60" loading="lazy" class="marquee-item h-12 w-auto shrink-0" aria-hidden="true">
+        <img src="https://www.iteshu.edu.mx/iteshu/images/reconocimiento/oshas.png" alt="" width="120" height="60" loading="lazy" class="marquee-item h-12 w-auto shrink-0" aria-hidden="true">
+        <img src="https://www.iteshu.edu.mx/iteshu/images/reconocimiento/anfei.png" alt="" width="120" height="60" loading="lazy" class="marquee-item h-12 w-auto shrink-0" aria-hidden="true">
+        <img src="https://www.iteshu.edu.mx/iteshu/images/reconocimiento/anuies.png" alt="" width="120" height="60" loading="lazy" class="marquee-item h-12 w-auto shrink-0" aria-hidden="true">
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICIOS / ACCESOS RÁPIDOS (cards estilo UAQ) ============ -->
+  <section id="servicios" class="bg-iteshu-light py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-12 reveal">
+        <p class="text-iteshu-gold font-bold uppercase tracking-[0.2em] text-xs mb-3">Accesos rápidos</p>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-iteshu-dark">Todo lo que necesitas, a un clic</h2>
+        <p class="text-iteshu-muted mt-3 max-w-2xl mx-auto">Trámites, plataformas y servicios organizados como en las grandes universidades públicas: claros y al frente.</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Card: Oferta Académica -->
+        <a href="#oferta" class="card-hover group bg-white rounded-xl p-7 shadow-sm border border-iteshu-line/60 reveal" style="--d:0ms">
+          <div class="w-14 h-14 rounded-lg bg-iteshu-primary/10 text-iteshu-primary flex items-center justify-center mb-5 group-hover:bg-iteshu-primary group-hover:text-white transition-colors" aria-hidden="true">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0v6m-6-8.5V17c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-7.5"/></svg>
+          </div>
+          <h3 class="text-lg font-bold text-iteshu-dark mb-2">Oferta Académica</h3>
+          <p class="text-iteshu-muted text-sm leading-relaxed mb-4">9 programas de licenciatura y posgrado con imagen, descripción y plan de estudios.</p>
+          <span class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Ver carreras
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+          </span>
+        </a>
+
+        <!-- Card: Portal Alumno -->
+        <a href="http://200.79.178.210/huichapanalu/" target="_blank" rel="noopener" class="card-hover group bg-white rounded-xl p-7 shadow-sm border border-iteshu-line/60 reveal" style="--d:90ms">
+          <div class="w-14 h-14 rounded-lg bg-iteshu-primary/10 text-iteshu-primary flex items-center justify-center mb-5 group-hover:bg-iteshu-primary group-hover:text-white transition-colors" aria-hidden="true">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          </div>
+          <h3 class="text-lg font-bold text-iteshu-dark mb-2">Portal Alumno</h3>
+          <p class="text-iteshu-muted text-sm leading-relaxed mb-4">Sistema de control escolar: calificaciones, horarios y servicios académicos.</p>
+          <span class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Acceder
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+          </span>
+        </a>
+
+        <!-- Card: Admisión -->
+        <a href="#admision" class="card-hover group bg-white rounded-xl p-7 shadow-sm border border-iteshu-line/60 reveal" style="--d:180ms">
+          <div class="w-14 h-14 rounded-lg bg-iteshu-primary/10 text-iteshu-primary flex items-center justify-center mb-5 group-hover:bg-iteshu-primary group-hover:text-white transition-colors" aria-hidden="true">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="text-lg font-bold text-iteshu-dark mb-2">Admisión</h3>
+          <p class="text-iteshu-muted text-sm leading-relaxed mb-4">Ficha, examen de ingreso y proceso de inscripción paso a paso para nuevo ingreso.</p>
+          <span class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Iniciar proceso
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+          </span>
+        </a>
+
+        <!-- Card: Convocatorias -->
+        <a href="#noticias" class="card-hover group bg-white rounded-xl p-7 shadow-sm border border-iteshu-line/60 reveal" style="--d:270ms">
+          <div class="w-14 h-14 rounded-lg bg-iteshu-primary/10 text-iteshu-primary flex items-center justify-center mb-5 group-hover:bg-iteshu-primary group-hover:text-white transition-colors" aria-hidden="true">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.4-9.4a2 2 0 112.8 2.8L11 15l-4 1 1-4 9.6-9.4z"/></svg>
+          </div>
+          <h3 class="text-lg font-bold text-iteshu-dark mb-2">Convocatorias</h3>
+          <p class="text-iteshu-muted text-sm leading-relaxed mb-4">Becas, examen de ingreso, inscripciones y avisos oficiales en un solo lugar.</p>
+          <span class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Ver avisos
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+          </span>
+        </a>
+
+        <!-- Card: Virtual / Moodle -->
+        <a href="https://cursos.iteshu.edu.mx/" target="_blank" rel="noopener" class="card-hover group bg-white rounded-xl p-7 shadow-sm border border-iteshu-line/60 reveal" style="--d:360ms">
+          <div class="w-14 h-14 rounded-lg bg-iteshu-primary/10 text-iteshu-primary flex items-center justify-center mb-5 group-hover:bg-iteshu-primary group-hover:text-white transition-colors" aria-hidden="true">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <h3 class="text-lg font-bold text-iteshu-dark mb-2">Virtual / Moodle</h3>
+          <p class="text-iteshu-muted text-sm leading-relaxed mb-4">Aulas virtuales "Mi Escuela en Casa": modalidad escolarizada y mixta.</p>
+          <span class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Entrar a Moodle
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+          </span>
+        </a>
+
+        <!-- Card: Contacto -->
+        <a href="#contacto" class="card-hover group bg-white rounded-xl p-7 shadow-sm border border-iteshu-line/60 reveal" style="--d:450ms">
+          <div class="w-14 h-14 rounded-lg bg-iteshu-primary/10 text-iteshu-primary flex items-center justify-center mb-5 group-hover:bg-iteshu-primary group-hover:text-white transition-colors" aria-hidden="true">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.9 5.3a2 2 0 002.2 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <h3 class="text-lg font-bold text-iteshu-dark mb-2">Contacto</h3>
+          <p class="text-iteshu-muted text-sm leading-relaxed mb-4">Dirección, teléfonos, WhatsApp y mapa del campus en Huichapan, Hidalgo.</p>
+          <span class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Escribirnos
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ¿POR QUÉ ITESHU? (bloque de valor) ============ -->
+  <section id="porque" class="bg-white py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-12 reveal">
+        <p class="text-iteshu-gold font-bold uppercase tracking-[0.2em] text-xs mb-3">¿Por qué ITESHU?</p>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-iteshu-dark">Una formación con respaldo real</h2>
+        <p class="text-iteshu-muted mt-3 max-w-2xl mx-auto">No prometemos: demostramos con acreditaciones, programas y resultados que ya existen en la institución.</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="card-hover bg-iteshu-light rounded-xl p-7 border-t-4 border-iteshu-gold reveal" style="--d:0ms">
+          <div class="w-14 h-14 rounded-full bg-white text-iteshu-primary flex items-center justify-center mb-5 shadow-sm" aria-hidden="true">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.6-2.6A11.95 11.95 0 0112 2.9a11.95 11.95 0 01-8.6 4.5A11.96 11.96 0 0012 21.1a11.96 11.96 0 008.6-13.7z"/></svg>
+          </div>
+          <h3 class="font-extrabold text-iteshu-dark mb-2">Acreditaciones de calidad</h3>
+          <p class="text-iteshu-muted text-sm leading-relaxed">Programas acreditados por <strong>CACEI</strong> y <strong>CACECA</strong>, con membresías ANFEI y ANUIES.</p>
+        </div>
+        <div class="card-hover bg-iteshu-light rounded-xl p-7 border-t-4 border-iteshu-gold reveal" style="--d:110ms">
+          <div class="w-14 h-14 rounded-full bg-white text-iteshu-primary flex items-center justify-center mb-5 shadow-sm" aria-hidden="true">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-2.2 0-4 1.3-4 3s1.8 3 4 3 4 1.3 4 3-1.8 3-4 3m0-12V6m0 12v2m4-13a9 9 0 11-8 0"/></svg>
+          </div>
+          <h3 class="font-extrabold text-iteshu-dark mb-2">Becas y apoyos</h3>
+          <p class="text-iteshu-muted text-sm leading-relaxed">Beca alimenticia, de aprovechamiento, EGEL e inglés, además de programas federales y estatales.</p>
+        </div>
+        <div class="card-hover bg-iteshu-light rounded-xl p-7 border-t-4 border-iteshu-gold reveal" style="--d:220ms">
+          <div class="w-14 h-14 rounded-full bg-white text-iteshu-primary flex items-center justify-center mb-5 shadow-sm" aria-hidden="true">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.9M9 20H4v-2a4 4 0 013-3.9m6-1.1a4 4 0 10-4-6.9M16 13a4 4 0 10-4-6.9M12 20v-6m0 0a4 4 0 00-4-4m4 4a4 4 0 014-4"/></svg>
+          </div>
+          <h3 class="font-extrabold text-iteshu-dark mb-2">Vinculación real</h3>
+          <p class="text-iteshu-muted text-sm leading-relaxed">Residencias profesionales, prácticas y convenios con empresas y productores de la región.</p>
+        </div>
+        <div class="card-hover bg-iteshu-light rounded-xl p-7 border-t-4 border-iteshu-gold reveal" style="--d:330ms">
+          <div class="w-14 h-14 rounded-full bg-white text-iteshu-primary flex items-center justify-center mb-5 shadow-sm" aria-hidden="true">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0H5m14 0h2m-2 0h-2M9 7h1m-1 4h1m4-4h1m-1 4h1"/></svg>
+          </div>
+          <h3 class="font-extrabold text-iteshu-dark mb-2">Campus e instalaciones</h3>
+          <p class="text-iteshu-muted text-sm leading-relaxed">Biblioteca, laboratorios, incubadora de innovación (CIIE) y espacios para la comunidad estudiantil.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OFERTA EDUCATIVA (grid visual; fondo real del sitio #092432) ============ -->
+  <section id="oferta" class="bg-iteshu-dark py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-10 reveal">
+        <p class="text-iteshu-gold font-bold uppercase tracking-[0.2em] text-xs mb-3">Oferta educativa</p>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-white">Elige tu camino en el ITESHU</h2>
+        <p class="text-white/70 mt-3 max-w-2xl mx-auto">Ingenierías, áreas creativas y posgrado. Filtra por área, imagen real y acceso directo a cada plan de estudios.</p>
+      </div>
+
+      <!-- Filtros por área -->
+      <div class="flex flex-wrap justify-center gap-3 mb-12 reveal" role="tablist" aria-label="Filtrar oferta educativa">
+        <button type="button" class="filter-btn active border-2 border-white/30 text-white font-bold text-sm px-5 py-2.5 rounded-full hover:bg-white/10" data-filter="todas" role="tab" aria-selected="true">Todas</button>
+        <button type="button" class="filter-btn border-2 border-white/30 text-white font-bold text-sm px-5 py-2.5 rounded-full hover:bg-white/10" data-filter="ingenieria" role="tab" aria-selected="false">Ingenierías</button>
+        <button type="button" class="filter-btn border-2 border-white/30 text-white font-bold text-sm px-5 py-2.5 rounded-full hover:bg-white/10" data-filter="creativa" role="tab" aria-selected="false">Arquitectura y Gastronomía</button>
+        <button type="button" class="filter-btn border-2 border-white/30 text-white font-bold text-sm px-5 py-2.5 rounded-full hover:bg-white/10" data-filter="posgrado" role="tab" aria-selected="false">Posgrado</button>
+      </div>
+
+      <div id="ofertaGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Mecatrónica -->
+        <article class="filter-card card-hover group bg-white rounded-xl overflow-hidden shadow-lg reveal" data-area="ingenieria" style="--d:0ms">
+          <div class="card-img-wrap">
+            <img src="https://www.iteshu.edu.mx/iteshu/images/ofertaEducativa/mecatronica.jpg" alt="Ingeniería Mecatrónica" width="200" height="200" loading="lazy" decoding="async"
+                 class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute top-3 left-3 z-10 bg-iteshu-gold text-iteshu-dark text-[10px] font-extrabold uppercase tracking-wider px-2 py-1 rounded">Demandada</span>
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-extrabold text-iteshu-dark mb-2">Ingeniería Mecatrónica</h3>
+            <p class="text-iteshu-muted text-sm leading-relaxed mb-4">Automatización, robótica y sistemas ciberfísicos para la industria 4.0.</p>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/imt.php" target="_blank" rel="noopener" class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Ver plan de estudios
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Sistemas Computacionales -->
+        <article class="filter-card card-hover group bg-white rounded-xl overflow-hidden shadow-lg reveal" data-area="ingenieria" style="--d:80ms">
+          <div class="card-img-wrap">
+            <img src="https://www.iteshu.edu.mx/iteshu/images/ofertaEducativa/sistemasc.jpg" alt="Ingeniería en Sistemas Computacionales" width="200" height="200" loading="lazy" decoding="async"
+                 class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute top-3 left-3 z-10 bg-iteshu-gold text-iteshu-dark text-[10px] font-extrabold uppercase tracking-wider px-2 py-1 rounded">Demandada</span>
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-extrabold text-iteshu-dark mb-2">Ingeniería en Sistemas Computacionales</h3>
+            <p class="text-iteshu-muted text-sm leading-relaxed mb-4">Desarrollo de software, redes, datos e inteligencia artificial.</p>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/isc.php" target="_blank" rel="noopener" class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Ver plan de estudios
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Gestión Empresarial -->
+        <article class="filter-card card-hover group bg-white rounded-xl overflow-hidden shadow-lg reveal" data-area="ingenieria" style="--d:160ms">
+          <div class="card-img-wrap">
+            <img src="https://www.iteshu.edu.mx/iteshu/images/ofertaEducativa/IGEM.jpg" alt="Ingeniería en Gestión Empresarial" width="200" height="200" loading="lazy" decoding="async"
+                 class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute top-3 left-3 z-10 bg-iteshu-gold text-iteshu-dark text-[10px] font-extrabold uppercase tracking-wider px-2 py-1 rounded">Virtual</span>
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-extrabold text-iteshu-dark mb-2">Ingeniería en Gestión Empresarial</h3>
+            <p class="text-iteshu-muted text-sm leading-relaxed mb-4">La ingeniería de los negocios: emprendimiento y dirección de empresas.</p>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/igem.php" target="_blank" rel="noopener" class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Ver plan de estudios
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Administración -->
+        <article class="filter-card card-hover group bg-white rounded-xl overflow-hidden shadow-lg reveal" data-area="ingenieria" style="--d:240ms">
+          <div class="card-img-wrap">
+            <img src="https://www.iteshu.edu.mx/iteshu/images/ofertaEducativa/administarcion.jpg" alt="Ingeniería en Administración" width="200" height="200" loading="lazy" decoding="async"
+                 class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-extrabold text-iteshu-dark mb-2">Ingeniería en Administración</h3>
+            <p class="text-iteshu-muted text-sm leading-relaxed mb-4">Gestión estratégica de organizaciones con visión de negocio y liderazgo.</p>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/admin.php" target="_blank" rel="noopener" class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Ver plan de estudios
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Energías Renovables -->
+        <article class="filter-card card-hover group bg-white rounded-xl overflow-hidden shadow-lg reveal" data-area="ingenieria" style="--d:320ms">
+          <div class="card-img-wrap">
+            <img src="https://www.iteshu.edu.mx/iteshu/images/ofertaEducativa/energias.jpg" alt="Ingeniería en Energías Renovables" width="200" height="200" loading="lazy" decoding="async"
+                 class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute top-3 left-3 z-10 bg-iteshu-gold text-iteshu-dark text-[10px] font-extrabold uppercase tracking-wider px-2 py-1 rounded">Sello regional</span>
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-extrabold text-iteshu-dark mb-2">Ingeniería en Energías Renovables</h3>
+            <p class="text-iteshu-muted text-sm leading-relaxed mb-4">Solar, eólica y sustentabilidad energética para el desarrollo regional.</p>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/energias.php" target="_blank" rel="noopener" class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Ver plan de estudios
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Innovación Agrícola Sustentable -->
+        <article class="filter-card card-hover group bg-white rounded-xl overflow-hidden shadow-lg reveal" data-area="ingenieria" style="--d:400ms">
+          <div class="card-img-wrap">
+            <img src="https://www.iteshu.edu.mx/iteshu/images/ofertaEducativa/innovacion.jpg" alt="Ingeniería en Innovación Agrícola Sustentable" width="200" height="200" loading="lazy" decoding="async"
+                 class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute top-3 left-3 z-10 bg-iteshu-gold text-iteshu-dark text-[10px] font-extrabold uppercase tracking-wider px-2 py-1 rounded">Sello regional</span>
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-extrabold text-iteshu-dark mb-2">Ingeniería en Innovación Agrícola Sustentable</h3>
+            <p class="text-iteshu-muted text-sm leading-relaxed mb-4">Tecnología aplicada al campo con proyectos reales con productores.</p>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/iias.php" target="_blank" rel="noopener" class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Ver plan de estudios
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Industrial -->
+        <article class="filter-card card-hover group bg-white rounded-xl overflow-hidden shadow-lg reveal" data-area="ingenieria" style="--d:480ms">
+          <div class="card-img-wrap">
+            <img src="https://www.iteshu.edu.mx/iteshu/images/ofertaEducativa/industrial.jpg" alt="Ingeniería Industrial" width="200" height="200" loading="lazy" decoding="async"
+                 class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-extrabold text-iteshu-dark mb-2">Ingeniería Industrial</h3>
+            <p class="text-iteshu-muted text-sm leading-relaxed mb-4">Optimización de procesos productivos, calidad y logística.</p>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/ii.php" target="_blank" rel="noopener" class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Ver plan de estudios
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Arquitectura -->
+        <article class="filter-card card-hover group bg-white rounded-xl overflow-hidden shadow-lg reveal" data-area="creativa" style="--d:0ms">
+          <div class="card-img-wrap">
+            <img src="https://www.iteshu.edu.mx/iteshu/images/ofertaEducativa/arquitectura.jpg" alt="Arquitectura" width="200" height="200" loading="lazy" decoding="async"
+                 class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-extrabold text-iteshu-dark mb-2">Arquitectura</h3>
+            <p class="text-iteshu-muted text-sm leading-relaxed mb-4">Diseño del hábitat humano: espacios sostenibles para la comunidad.</p>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/arq.php" target="_blank" rel="noopener" class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Ver plan de estudios
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Gastronomía -->
+        <article class="filter-card card-hover group bg-white rounded-xl overflow-hidden shadow-lg reveal" data-area="creativa" style="--d:140ms">
+          <div class="card-img-wrap">
+            <img src="https://www.iteshu.edu.mx/iteshu/images/ofertaEducativa/gastronomia.jpg" alt="Gastronomía" width="200" height="200" loading="lazy" decoding="async"
+                 class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-extrabold text-iteshu-dark mb-2">Gastronomía</h3>
+            <p class="text-iteshu-muted text-sm leading-relaxed mb-4">La cocina como industria, identidad y emprendimiento.</p>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/gastro.php" target="_blank" rel="noopener" class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Ver plan de estudios
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Maestría en Desarrollo Regional e Innovación Tecnológica -->
+        <article class="filter-card card-hover group bg-white rounded-xl overflow-hidden shadow-lg reveal" data-area="posgrado" style="--d:0ms">
+          <div class="card-img-wrap">
+            <img src="https://www.iteshu.edu.mx/iteshu/images/noticias/2026/Junio/023.jpg" alt="Maestría en Desarrollo Regional e Innovación Tecnológica" width="1890" height="1417" loading="lazy" decoding="async"
+                 class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute top-3 left-3 z-10 bg-iteshu-gold text-iteshu-dark text-[10px] font-extrabold uppercase tracking-wider px-2 py-1 rounded">Nueva</span>
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-extrabold text-iteshu-dark mb-2">Maestría en Desarrollo Regional e Innovación Tecnológica</h3>
+            <p class="text-iteshu-muted text-sm leading-relaxed mb-4">Dos LGAC: Desarrollo Regional Sostenible e Innovación Tecnológica e Industria 4.0.</p>
+            <a href="#maestria" class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Conocer el programa
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Maestría en Ingeniería Mecatrónica -->
+        <article class="filter-card card-hover group bg-white rounded-xl overflow-hidden shadow-lg reveal" data-area="posgrado" style="--d:140ms">
+          <div class="card-img-wrap">
+            <img src="https://www.iteshu.edu.mx/iteshu/images/ofertaEducativa/MIM.jpg" alt="Maestría en Ingeniería Mecatrónica" width="1000" height="1294" loading="lazy" decoding="async"
+                 class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-extrabold text-iteshu-dark mb-2">Maestría en Ingeniería Mecatrónica</h3>
+            <p class="text-iteshu-muted text-sm leading-relaxed mb-4">Diseño y desarrollo de sistemas cibernéticos con enfoque profesionalizante.</p>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/posgrado/maestria.php" target="_blank" rel="noopener" class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Ver programa
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <div class="text-center mt-12 reveal">
+        <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/escolarizada.php" target="_blank" rel="noopener"
+           class="inline-flex items-center gap-2 text-white/85 hover:text-iteshu-gold font-semibold text-sm transition-colors">
+          Ver la oferta completa en el sitio oficial
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MAESTRÍA (sección especial de la nueva maestría) ============ -->
+  <section id="maestria" class="bg-white py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid lg:grid-cols-5 gap-10 items-center">
+        <!-- Texto -->
+        <div class="reveal-left lg:col-span-3">
+          <p class="inline-flex items-center gap-2 text-iteshu-gold font-bold uppercase tracking-[0.2em] text-xs mb-4">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-iteshu-gold" aria-hidden="true"></span>
+            Nuevo posgrado · Convocatoria abierta
+          </p>
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-iteshu-dark leading-tight mb-5">
+            Maestría en Desarrollo Regional e Innovación Tecnológica
+          </h2>
+          <p class="text-iteshu-muted text-lg leading-relaxed mb-6">
+            Programa orientado a formar especialistas capaces de generar soluciones
+            innovadoras para los desafíos económicos, sociales y tecnológicos de la
+            región, con dos líneas de generación y aplicación del conocimiento.
+          </p>
+
+          <div class="grid sm:grid-cols-2 gap-4 mb-8">
+            <div class="bg-iteshu-light rounded-xl p-5 border-l-4 border-iteshu-green">
+              <h3 class="font-extrabold text-iteshu-dark mb-1">Desarrollo Regional Sostenible</h3>
+              <p class="text-iteshu-muted text-sm">Proyectos con impacto territorial: agricultura sostenible y soberanía alimentaria.</p>
+            </div>
+            <div class="bg-iteshu-light rounded-xl p-5 border-l-4 border-iteshu-gold">
+              <h3 class="font-extrabold text-iteshu-dark mb-1">Innovación Tecnológica e Industria 4.0</h3>
+              <p class="text-iteshu-muted text-sm">Energías renovables, inteligencia artificial y emprendimiento tecnológico.</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="https://fichas.iteshu.edu.mx/" target="_blank" rel="noopener"
+               class="btn-shine group inline-flex items-center justify-center bg-iteshu-primary hover:bg-iteshu-navy text-white font-bold text-base px-7 py-3.5 rounded-md transition-colors shadow-lg">
+              Consultar convocatoria
+              <svg class="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+            </a>
+            <a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/posgrado/Posgrado.php" target="_blank" rel="noopener"
+               class="inline-flex items-center justify-center border-2 border-iteshu-primary text-iteshu-primary hover:bg-iteshu-primary hover:text-white font-semibold text-base px-7 py-3.5 rounded-md transition-colors">
+              Ver posgrados ITESHU
+            </a>
+          </div>
+        </div>
+
+        <!-- Imagen real: foto oficial de la convocatoria -->
+        <div class="reveal-right lg:col-span-2 relative" style="--d:150ms">
+          <div class="absolute -inset-3 rounded-2xl bg-iteshu-dark/5" aria-hidden="true"></div>
+          <img src="https://www.iteshu.edu.mx/iteshu/images/noticias/2026/Junio/023.jpg"
+               alt="Fotografía oficial del evento de la Maestría en Desarrollo Regional e Innovación Tecnológica del ITESHU"
+               width="1890" height="1417" loading="lazy" decoding="async"
+               class="relative rounded-xl object-cover w-full h-64 md:h-80 shadow-xl">
+          <div class="relative -mt-8 mx-6 bg-iteshu-dark text-white rounded-lg p-4 shadow-xl">
+            <p class="text-sm leading-snug"><span class="font-extrabold text-iteshu-gold">Orientada a</span> egresados de ingeniería, arquitectura, administración, economía, ciencias ambientales y disciplinas afines.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VINCULACIÓN / TRANSFERENCIA TECNOLÓGICA ============ -->
+  <section id="vinculacion" class="relative bg-iteshu-primary py-16 md:py-24 overflow-hidden">
+    <div class="absolute inset-0 opacity-[0.05]" aria-hidden="true"
+         style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 24px 24px;"></div>
+    <div class="relative max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
+      <div class="reveal-left">
+        <p class="text-iteshu-gold font-bold uppercase tracking-[0.2em] text-xs mb-4">Vinculación · Transferencia tecnológica</p>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-white leading-tight mb-6">Innovación que trasciende el aula</h2>
+        <p class="text-white/80 text-lg leading-relaxed mb-8">Los proyectos del ITESHU llegan a la industria, al campo y a las comunidades. Hechos reales, no promesas:</p>
+
+        <ul class="space-y-5">
+          <li class="flex gap-4">
+            <span class="shrink-0 w-11 h-11 rounded-full bg-iteshu-gold text-iteshu-dark flex items-center justify-center" aria-hidden="true">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.6-2.6A11.95 11.95 0 0112 2.9a11.95 11.95 0 01-8.6 4.5A11.96 11.96 0 0012 21.1a11.96 11.96 0 008.6-13.7z"/></svg>
+            </span>
+            <div>
+              <h3 class="font-extrabold text-white mb-1">Patente 427385</h3>
+              <p class="text-white/75 text-sm leading-relaxed">Producción de materiales decorativos a partir de residuos mineros, desarrollada en el ITESHU.</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <span class="shrink-0 w-11 h-11 rounded-full bg-iteshu-gold text-iteshu-dark flex items-center justify-center" aria-hidden="true">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.5 5.5 0 00-10.78 2.096A4.001 4.001 0 003 15z"/></svg>
+            </span>
+            <div>
+              <h3 class="font-extrabold text-white mb-1">Deshidratador de manzana</h3>
+              <p class="text-white/75 text-sm leading-relaxed">Proyecto de Energías Renovables entregado al Centro Ecoturístico La Purísima para aprovechar productos agrícolas regionales.</p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <span class="shrink-0 w-11 h-11 rounded-full bg-iteshu-gold text-iteshu-dark flex items-center justify-center" aria-hidden="true">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.9M9 20H4v-2a4 4 0 013-3.9m6-1.1a4 4 0 10-4-6.9M16 13a4 4 0 10-4-6.9M12 20v-6m0 0a4 4 0 00-4-4m4 4a4 4 0 014-4"/></svg>
+            </span>
+            <div>
+              <h3 class="font-extrabold text-white mb-1">Convenio Legado Verde</h3>
+              <p class="text-white/75 text-sm leading-relaxed">Residencias profesionales y prácticas para estudiantes de Innovación Agrícola Sustentable con empresa productora regional.</p>
+            </div>
+          </li>
+        </ul>
+
+        <a href="https://www.iteshu.edu.mx/iteshu/content/vinculacion/vinculacion.php" target="_blank" rel="noopener"
+           class="mt-9 inline-flex items-center gap-2 text-iteshu-gold hover:text-white font-bold transition-colors">
+          Conoce toda la vinculación del ITESHU
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+        </a>
+      </div>
+
+      <div class="reveal-right relative" style="--d:150ms">
+        <div class="absolute -inset-3 rounded-2xl border-2 border-iteshu-gold/50" aria-hidden="true"></div>
+        <img src="https://www.iteshu.edu.mx/iteshu/images/alumnos/incubadorainnovacion.jpg"
+             alt="Incubadora de innovación del ITESHU (CIIE)" width="277" height="108" loading="lazy" decoding="async"
+             class="relative rounded-xl object-cover w-full h-72 shadow-2xl">
+        <div class="floaty absolute -bottom-5 right-4 bg-iteshu-gold text-iteshu-dark rounded-lg px-4 py-3 shadow-xl">
+          <p class="font-extrabold text-sm leading-tight">CIIE-ITESHU<br><span class="font-semibold">Incubadora de innovación</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ADMISIÓN (paso a paso) ============ -->
+  <section id="admision" class="bg-iteshu-light py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-12 reveal">
+        <p class="text-iteshu-gold font-bold uppercase tracking-[0.2em] text-xs mb-3">Admisión 2026</p>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-iteshu-dark">Tu lugar en el ITESHU, en 4 pasos</h2>
+        <p class="text-iteshu-muted mt-3 max-w-2xl mx-auto">Un proceso claro, sin vueltas: así convertimos la página en una puerta de entrada real.</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="card-hover bg-white rounded-xl p-7 shadow-sm border border-iteshu-line/60 reveal" style="--d:0ms">
+          <span class="inline-flex items-center justify-center w-11 h-11 rounded-full bg-iteshu-primary text-white font-extrabold text-lg mb-5" aria-hidden="true">1</span>
+          <h3 class="font-extrabold text-iteshu-dark mb-2">Registra tu ficha</h3>
+          <p class="text-iteshu-muted text-sm leading-relaxed">Realiza tu pago y registro en línea en el portal oficial de fichas.</p>
+        </div>
+        <div class="card-hover bg-white rounded-xl p-7 shadow-sm border border-iteshu-line/60 reveal" style="--d:110ms">
+          <span class="inline-flex items-center justify-center w-11 h-11 rounded-full bg-iteshu-primary text-white font-extrabold text-lg mb-5" aria-hidden="true">2</span>
+          <h3 class="font-extrabold text-iteshu-dark mb-2">Presenta el examen</h3>
+          <p class="text-iteshu-muted text-sm leading-relaxed">Examen de ingreso con guía oficial publicada por el instituto.</p>
+        </div>
+        <div class="card-hover bg-white rounded-xl p-7 shadow-sm border border-iteshu-line/60 reveal" style="--d:220ms">
+          <span class="inline-flex items-center justify-center w-11 h-11 rounded-full bg-iteshu-primary text-white font-extrabold text-lg mb-5" aria-hidden="true">3</span>
+          <h3 class="font-extrabold text-iteshu-dark mb-2">Consulta resultados</h3>
+          <p class="text-iteshu-muted text-sm leading-relaxed">Publicación oficial de resultados y asignación de lugar.</p>
+        </div>
+        <div class="card-hover bg-white rounded-xl p-7 shadow-sm border border-iteshu-line/60 reveal" style="--d:330ms">
+          <span class="inline-flex items-center justify-center w-11 h-11 rounded-full bg-iteshu-primary text-white font-extrabold text-lg mb-5" aria-hidden="true">4</span>
+          <h3 class="font-extrabold text-iteshu-dark mb-2">Inscríbete</h3>
+          <p class="text-iteshu-muted text-sm leading-relaxed">Proceso de inscripción con acompañamiento de servicios escolares.</p>
+        </div>
+      </div>
+
+      <div class="text-center mt-10 reveal">
+        <a href="https://fichas.iteshu.edu.mx/" target="_blank" rel="noopener"
+           class="btn-shine group inline-flex items-center justify-center bg-iteshu-primary hover:bg-iteshu-navy text-white font-extrabold text-base px-8 py-4 rounded-md transition-colors shadow-lg">
+          Comenzar mi ficha ahora
+          <svg class="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NOTICIAS / CONVOCATORIAS ============ -->
+  <section id="noticias" class="bg-white py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-12 reveal">
+        <p class="text-iteshu-gold font-bold uppercase tracking-[0.2em] text-xs mb-3">Noticias y convocatorias</p>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-iteshu-dark">Lo último del ITESHU</h2>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-8">
+        <!-- Noticias (2/3) -->
+        <div class="lg:col-span-2 space-y-6">
+          <article class="card-hover group bg-white rounded-xl overflow-hidden shadow-sm border border-iteshu-line/60 flex flex-col sm:flex-row reveal">
+            <img src="https://www.iteshu.edu.mx/iteshu/images/noticias/2026/Junio/023.jpg" alt="Convocatoria Maestría en Desarrollo Regional e Innovación Tecnológica" width="1890" height="1417" loading="lazy" decoding="async"
+                 class="sm:w-56 h-44 sm:h-auto object-cover group-hover:scale-[1.02] transition-transform duration-500">
+            <div class="p-6 flex-1">
+              <p class="text-[11px] font-bold text-iteshu-gold uppercase tracking-wider mb-2">Posgrado · Junio 2026</p>
+              <h3 class="font-extrabold text-iteshu-dark text-lg leading-snug mb-2">ITESHU lanza convocatoria para la Maestría en Desarrollo Regional e Innovación Tecnológica</h3>
+              <p class="text-iteshu-muted text-sm leading-relaxed mb-3">El nuevo posgrado fortalecerá la formación de especialistas en desarrollo sostenible, innovación tecnológica e Industria 4.0 con impacto regional.</p>
+              <span class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Ver convocatoria
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+              </span>
+            </div>
+          </article>
+
+          <article class="card-hover group bg-white rounded-xl overflow-hidden shadow-sm border border-iteshu-line/60 flex flex-col sm:flex-row reveal">
+            <img src="https://www.iteshu.edu.mx/iteshu/images/noticias/2026/Junio/boletin-022.jpg" alt="Vinculación del ITESHU con educación básica" width="1890" height="1417" loading="lazy" decoding="async"
+                 class="sm:w-56 h-44 sm:h-auto object-cover group-hover:scale-[1.02] transition-transform duration-500">
+            <div class="p-6 flex-1">
+              <p class="text-[11px] font-bold text-iteshu-gold uppercase tracking-wider mb-2">Vinculación · Junio 2026</p>
+              <h3 class="font-extrabold text-iteshu-dark text-lg leading-snug mb-2">ITESHU fortalece la vinculación con educación básica: orientación y salud</h3>
+              <p class="text-iteshu-muted text-sm leading-relaxed mb-3">230 estudiantes de secundaria beneficiados con pláticas de orientación vocacional y prevención en el marco de la vinculación institucional.</p>
+              <span class="inline-flex items-center text-iteshu-primary font-bold text-sm group-hover:gap-2 transition-all">Leer nota
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+              </span>
+            </div>
+          </article>
+        </div>
+
+        <!-- Convocatorias (1/3) -->
+        <aside class="reveal-right" style="--d:120ms">
+          <div class="bg-iteshu-dark rounded-xl p-7 text-white shadow-lg lg:sticky lg:top-28">
+            <h3 class="font-extrabold text-lg mb-1">Convocatorias y avisos</h3>
+            <p class="text-white/70 text-sm mb-5">Documentos oficiales del instituto.</p>
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a href="https://www.iteshu.edu.mx/iteshu/content/2026/julio/Proceso_de_inscripcion.png" target="_blank" rel="noopener" class="flex items-start gap-3 group hover:text-iteshu-gold transition-colors">
+                  <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.6a2 2 0 011.4.6l4.4 4.4a2 2 0 01.6 1.4V19a2 2 0 01-2 2z"/></svg>
+                  <span><strong class="block group-hover:text-iteshu-gold transition-colors">Proceso de inscripción 2026</strong> nuevo ingreso</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://fichas.iteshu.edu.mx/" target="_blank" rel="noopener" class="flex items-start gap-3 group hover:text-iteshu-gold transition-colors">
+                  <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                  <span><strong class="block group-hover:text-iteshu-gold transition-colors">Fichas de admisión 2026</strong> registro en línea</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.iteshu.edu.mx/iteshu/content/2025/GUIA_DEL_EXAMEN_DE_INGRESO_2025_ITESHU.pdf" target="_blank" rel="noopener" class="flex items-start gap-3 group hover:text-iteshu-gold transition-colors">
+                  <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.2a2.2 2.2 0 013.7-1.6M12 6.2V4m0 2.2a2.2 2.2 0 01-3.7-1.6M12 6.2V2m6 8.5a6 6 0 01-12 0M4 10.5V9a8 8 0 0116 0v1.5M12 22a3 3 0 01-3-3v-2h6v2a3 3 0 01-3 3z"/></svg>
+                  <span><strong class="block group-hover:text-iteshu-gold transition-colors">Guía del examen de ingreso</strong> material oficial</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.iteshu.edu.mx/iteshu/content/2026/marzo/CONVOCATORIA_sellada_PROGRAMAS_2026_BECA_APROVECHAMIENTO.pdf" target="_blank" rel="noopener" class="flex items-start gap-3 group hover:text-iteshu-gold transition-colors">
+                  <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V4a2 2 0 00-2 2h2zm7 8a7 7 0 11-14 0"/></svg>
+                  <span><strong class="block group-hover:text-iteshu-gold transition-colors">Becas de aprovechamiento 2026</strong> programa oficial</span>
+                </a>
+              </li>
+            </ul>
+            <a href="https://www.iteshu.edu.mx/iteshu/" target="_blank" rel="noopener"
+               class="mt-6 inline-flex w-full items-center justify-center bg-iteshu-gold hover:bg-white text-iteshu-dark font-bold text-sm px-5 py-3 rounded-md transition-colors">
+              Ver sitio oficial completo
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VIDA ESTUDIANTIL (galería con fotos reales) ============ -->
+  <section id="vida" class="bg-iteshu-light py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-12 reveal">
+        <p class="text-iteshu-gold font-bold uppercase tracking-[0.2em] text-xs mb-3">Vida estudiantil</p>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-iteshu-dark">El campus que te va a recibir</h2>
+        <p class="text-iteshu-muted mt-3 max-w-2xl mx-auto">Espacios, instalaciones y momentos reales de la comunidad ITESHU.</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-6">
+        <figure class="card-hover group relative rounded-xl overflow-hidden shadow-lg reveal" style="--d:0ms">
+          <img src="https://www.iteshu.edu.mx/iteshu/images/alumnos/biblioteca.jpg" alt="Biblioteca del ITESHU" width="277" height="108" loading="lazy" decoding="async"
+               class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
+          <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-iteshu-dark/90 to-transparent text-white px-5 pb-4 pt-14 text-sm font-bold">Biblioteca</figcaption>
+        </figure>
+        <figure class="card-hover group relative rounded-xl overflow-hidden shadow-lg reveal" style="--d:120ms">
+          <img src="https://www.iteshu.edu.mx/iteshu/images/alumnos/incubadorainnovacion.jpg" alt="Incubadora de innovación CIIE-ITESHU" width="277" height="108" loading="lazy" decoding="async"
+               class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
+          <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-iteshu-dark/90 to-transparent text-white px-5 pb-4 pt-14 text-sm font-bold">Incubadora de innovación · CIIE</figcaption>
+        </figure>
+        <figure class="card-hover group relative rounded-xl overflow-hidden shadow-lg reveal" style="--d:60ms">
+          <img src="https://www.iteshu.edu.mx/iteshu/images/noticias/2026/Junio/023.jpg" alt="Evento de la Maestría en Desarrollo Regional e Innovación Tecnológica" width="1890" height="1417" loading="lazy" decoding="async"
+               class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
+          <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-iteshu-dark/90 to-transparent text-white px-5 pb-4 pt-14 text-sm font-bold">Presentación de la nueva Maestría</figcaption>
+        </figure>
+        <figure class="card-hover group relative rounded-xl overflow-hidden shadow-lg reveal" style="--d:180ms">
+          <img src="https://www.iteshu.edu.mx/iteshu/images/noticias/2026/Junio/boletin-022.jpg" alt="Acciones de vinculación del ITESHU con educación básica" width="1890" height="1417" loading="lazy" decoding="async"
+               class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
+          <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-iteshu-dark/90 to-transparent text-white px-5 pb-4 pt-14 text-sm font-bold">Vinculación con la comunidad</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CAMPUS / UBICACIÓN ============ -->
+  <section id="campus" class="bg-white py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-12 reveal">
+        <p class="text-iteshu-gold font-bold uppercase tracking-[0.2em] text-xs mb-3">Campus y ubicación</p>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-iteshu-dark">El Saucillo, Huichapan, Hidalgo</h2>
+        <p class="text-iteshu-muted mt-3 max-w-2xl mx-auto">Un campus equipado con biblioteca, laboratorios, incubadora de innovación y espacios para la comunidad estudiantil.</p>
+      </div>
+
+      <div class="grid lg:grid-cols-5 gap-8">
+        <!-- Mapa oficial -->
+        <div class="lg:col-span-3 reveal">
+          <div class="rounded-xl overflow-hidden shadow-lg border border-iteshu-line/60 h-full min-h-[340px]">
+            <iframe
+              title="Mapa: Instituto Tecnológico Superior de Huichapan"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3741.5369717297785!2d-99.71049928524931!3d20.31942408638685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d3bc3d8f22e947%3A0x2e6b2c1efad2535d!2sInstituto%20Tecnol%C3%B3gico%20Superior%20Huichapan!5e0!3m2!1ses-419!2smx!4v1614373783896"
+              width="100%" height="100%" style="border:0; min-height:340px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+
+        <!-- Datos de contacto -->
+        <div id="contacto" class="lg:col-span-2 reveal">
+          <div class="bg-white rounded-xl p-7 shadow-sm border border-iteshu-line/60 h-full">
+            <h3 class="font-extrabold text-iteshu-dark text-xl mb-5">Contacto</h3>
+            <ul class="space-y-4 text-sm text-iteshu-muted">
+              <li class="flex gap-3">
+                <svg class="w-5 h-5 shrink-0 text-iteshu-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <span><strong class="text-iteshu-dark block">Dirección</strong>Domicilio Conocido s/n, El Saucillo, Huichapan, Hidalgo, C.P. 42411</span>
+              </li>
+              <li class="flex gap-3">
+                <svg class="w-5 h-5 shrink-0 text-iteshu-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.3a1 1 0 01.9.6l1.2 2.9a1 1 0 01-.2 1.1L8.5 9.4a12 12 0 006.1 6.1l1.8-1.7a1 1 0 011.1-.2l2.9 1.2a1 1 0 01.6.9V19a2 2 0 01-2 2h-1C9.7 21 3 14.3 3 6V5z"/></svg>
+                <span><strong class="text-iteshu-dark block">Teléfonos</strong>(01 761) 724 81 47 · 724 80 79 · 724 80 80 · 724 80 84</span>
+              </li>
+              <li class="flex gap-3">
+                <svg class="w-5 h-5 shrink-0 text-iteshu-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span><strong class="text-iteshu-dark block">Horario</strong>Lunes a viernes, 8:30 a 17:00 hrs</span>
+              </li>
+            </ul>
+
+            <div class="mt-6 grid grid-cols-2 gap-3">
+              <a href="https://api.whatsapp.com/send?phone=527617248147&text=Informaci%C3%B3n%20sobre%20ITESHU" target="_blank" rel="noopener"
+                 class="inline-flex items-center justify-center bg-[#25D366] hover:brightness-95 text-white font-bold text-sm px-4 py-3 rounded-md transition-all">
+                WhatsApp
+              </a>
+              <a href="https://www.facebook.com/ITESHU" target="_blank" rel="noopener"
+                 class="inline-flex items-center justify-center bg-[#4267b2] hover:brightness-95 text-white font-bold text-sm px-4 py-3 rounded-md transition-all">
+                Facebook
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA FINAL (antes del footer) ============ -->
+
+  <!-- ============ CTA FINAL ============ -->
+  <section class="relative bg-gradient-to-br from-iteshu-primary via-iteshu-navy to-iteshu-dark py-16 md:py-20 overflow-hidden">
+    <div class="absolute inset-0 opacity-[0.06]" aria-hidden="true"
+         style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 24px 24px;"></div>
+    <div class="relative max-w-4xl mx-auto px-4 text-center">
+      <p class="text-iteshu-gold font-bold uppercase tracking-[0.2em] text-xs mb-4 reveal">Admisión 2026 · Convocatoria abierta</p>
+      <h2 class="font-display text-3xl md:text-5xl font-bold text-white leading-tight mb-5 reveal" style="--d:100ms">
+        ¿Listo para ser parte del ITESHU?
+      </h2>
+      <p class="text-white/80 text-lg mb-9 max-w-2xl mx-auto reveal" style="--d:200ms">
+        Da el primer paso: registra tu ficha, presenta tu examen y construye tu
+        futuro en el motor tecnológico y sustentable de la región.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4 reveal" style="--d:300ms">
+        <a href="https://fichas.iteshu.edu.mx/" target="_blank" rel="noopener"
+           class="btn-shine group inline-flex items-center justify-center bg-iteshu-gold hover:bg-white text-iteshu-dark font-extrabold text-base px-9 py-4 rounded-md transition-colors shadow-xl">
+          Quiero ser aspirante
+          <svg class="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+        </a>
+        <a href="https://api.whatsapp.com/send?phone=527617248147&text=Quiero%20informaci%C3%B3n%20sobre%20la%20admisión%20al%20ITESHU" target="_blank" rel="noopener"
+           class="inline-flex items-center justify-center border-2 border-white/70 text-white hover:bg-white hover:text-iteshu-primary font-semibold text-base px-9 py-4 rounded-md transition-colors">
+          Hablar por WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-iteshu-primary text-white">
+    <div class="max-w-7xl mx-auto px-4 py-14">
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <!-- Marca -->
+        <div>
+          <img src="https://www.iteshu.edu.mx/iteshu/images/header/iteshu.png" alt="Logo Instituto Tecnológico Superior de Huichapan" width="171" height="52" loading="lazy" class="bg-white rounded-md p-2 w-44 h-auto mb-4">
+          <p class="text-white/80 text-sm leading-relaxed mb-4">Instituto Tecnológico Superior de Huichapan. El motor tecnológico y sustentable de la región.</p>
+          <div class="flex gap-3">
+            <a href="https://www.facebook.com/ITESHU" target="_blank" rel="noopener" aria-label="Facebook del ITESHU"
+               class="w-10 h-10 rounded-full bg-white/10 hover:bg-iteshu-gold flex items-center justify-center transition-colors">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0022 12z"/></svg>
+            </a>
+            <a href="https://twitter.com/@ITSHuichapan" target="_blank" rel="noopener" aria-label="Twitter del ITESHU"
+               class="w-10 h-10 rounded-full bg-white/10 hover:bg-iteshu-gold flex items-center justify-center transition-colors">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L1.2 2h6.4l4.4 5.9L18.9 2zm-1.1 18h1.7L7.1 3.7H5.3L17.8 20z"/></svg>
+            </a>
+            <a href="https://api.whatsapp.com/send?phone=527617248147&text=Informaci%C3%B3n%20sobre%20ITESHU" target="_blank" rel="noopener" aria-label="WhatsApp del ITESHU"
+               class="w-10 h-10 rounded-full bg-white/10 hover:bg-iteshu-gold flex items-center justify-center transition-colors">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm5.2 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5s.8 1.9.8 2c.1.1.1.3 0 .5-.1.2-.1.3-.3.5l-.5.6c-.2.2-.3.3-.1.6.2.3.8 1.4 1.8 2.2 1.2 1.1 2.3 1.4 2.6 1.6.3.1.5.1.7-.1.2-.2.8-.9 1-1.2.2-.3.4-.3.7-.2l1.7.8c.3.1.5.2.6.4 0 .1 0 .6-.2 1.2z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Oferta educativa -->
+        <div>
+          <h3 class="font-extrabold text-iteshu-gold uppercase tracking-wider text-sm mb-4">Oferta educativa</h3>
+          <ul class="space-y-2.5 text-sm text-white/80">
+            <li><a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/escolarizada/escolarizada.php" target="_blank" rel="noopener" class="hover:text-iteshu-gold transition-colors">Licenciaturas escolarizadas</a></li>
+            <li><a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/mixta/mixta.php" target="_blank" rel="noopener" class="hover:text-iteshu-gold transition-colors">Modalidad mixta</a></li>
+            <li><a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/posgrado/Posgrado.php" target="_blank" rel="noopener" class="hover:text-iteshu-gold transition-colors">Posgrado</a></li>
+            <li><a href="https://www.iteshu.edu.mx/iteshu/content/ofertaeducativa/unidad/unidad.php" target="_blank" rel="noopener" class="hover:text-iteshu-gold transition-colors">Espacio académico Tecozautla</a></li>
+          </ul>
+        </div>
+
+        <!-- Enlaces institucionales -->
+        <div>
+          <h3 class="font-extrabold text-iteshu-gold uppercase tracking-wider text-sm mb-4">Institucional</h3>
+          <ul class="space-y-2.5 text-sm text-white/80">
+            <li><a href="https://www.iteshu.edu.mx/iteshu/content/identidad/identidad.php" target="_blank" rel="noopener" class="hover:text-iteshu-gold transition-colors">Identidad</a></li>
+            <li><a href="https://www.iteshu.edu.mx/iteshu/content/transparencia.php" target="_blank" rel="noopener" class="hover:text-iteshu-gold transition-colors">Transparencia</a></li>
+            <li><a href="https://www.iteshu.edu.mx/iteshu/content/vinculacion/vinculacion.php" target="_blank" rel="noopener" class="hover:text-iteshu-gold transition-colors">Vinculación</a></li>
+            <li><a href="https://www.iteshu.edu.mx/iteshu/content/2023/Aviso_de_privacidad.pdf" target="_blank" rel="noopener" class="hover:text-iteshu-gold transition-colors">Aviso de privacidad</a></li>
+          </ul>
+        </div>
+
+        <!-- Accesos y portales -->
+        <div>
+          <h3 class="font-extrabold text-iteshu-gold uppercase tracking-wider text-sm mb-4">Accesos</h3>
+          <ul class="space-y-2.5 text-sm text-white/80">
+            <li><a href="http://200.79.178.210/huichapanalu/" target="_blank" rel="noopener" class="hover:text-iteshu-gold transition-colors">Portal Alumno</a></li>
+            <li><a href="https://cursos.iteshu.edu.mx/" target="_blank" rel="noopener" class="hover:text-iteshu-gold transition-colors">Moodle (aulas virtuales)</a></li>
+            <li><a href="https://fichas.iteshu.edu.mx/" target="_blank" rel="noopener" class="hover:text-iteshu-gold transition-colors">Fichas de admisión</a></li>
+            <li><a href="https://www.iteshu.edu.mx/iteshu/content/2025/GUIA_DEL_EXAMEN_DE_INGRESO_2025_ITESHU.pdf" target="_blank" rel="noopener" class="hover:text-iteshu-gold transition-colors">Guía del examen de ingreso</a></li>
+            <li><a href="https://www.iteshu.edu.mx/iteshu/content/2026/marzo/CONVOCATORIA_sellada_PROGRAMAS_2026_BECA_APROVECHAMIENTO.pdf" target="_blank" rel="noopener" class="hover:text-iteshu-gold transition-colors">Becas 2026</a></li>
+          </ul>
+        </div>
+
+        <!-- Contacto + escudo -->
+        <div>
+          <h3 class="font-extrabold text-iteshu-gold uppercase tracking-wider text-sm mb-4">Contacto</h3>
+          <address class="not-italic text-sm text-white/80 space-y-2">
+            <p>Dom. Conocido s/n, El Saucillo,<br>Huichapan, Hidalgo C.P. 42411</p>
+            <p>(01 761) 724 81 47 · 724 80 79<br>724 80 80 · 724 80 84</p>
+            <p>Lun–Vie 8:30 a 17:00 hrs</p>
+          </address>
+          <img src="https://www.iteshu.edu.mx/iteshu/images/footer/footer_escudo.png" alt="Escudo del Estado de Hidalgo" width="95" height="113" loading="lazy" class="mt-5 w-16 h-auto">
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-white/15">
+      <div class="max-w-7xl mx-auto px-4 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/70">
+        <p>© <span id="year">2026</span> Instituto Tecnológico Superior de Huichapan · TecNM</p>
+        <p>Prototipo de propuesta web · Identidad y fotografías oficiales de iteshu.edu.mx</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Botón flotante de WhatsApp (enlace real del sitio) -->
+  <a href="https://api.whatsapp.com/send?phone=527617248147&text=Informaci%C3%B3n%20sobre%20ITESHU"
+     target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"
+     class="pulse-ring fixed bottom-5 right-5 z-40 w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm5.2 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5s.8 1.9.8 2c.1.1.1.3 0 .5-.1.2-.1.3-.3.5l-.5.6c-.2.2-.3.3-.1.6.2.3.8 1.4 1.8 2.2 1.2 1.1 2.3 1.4 2.6 1.6.3.1.5.1.7-.1.2-.2.8-.9 1-1.2.2-.3.4-.3.7-.2l1.7.8c.3.1.5.2.6.4 0 .1 0 .6-.2 1.2z"/></svg>
+  </a>
+
+  <!-- ============ JS: menú móvil, header, animaciones, año ============ -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* --- Menú hamburguesa funcional --- */
+      var menuBtn = document.getElementById('menuBtn');
+      var mobileMenu = document.getElementById('mobileMenu');
+      var iconOpen = document.getElementById('iconOpen');
+      var iconClose = document.getElementById('iconClose');
+
+      function setMenu(open) {
+        mobileMenu.classList.toggle('hidden', !open);
+        menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        menuBtn.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+        iconOpen.classList.toggle('hidden', open);
+        iconClose.classList.toggle('hidden', !open);
+      }
+
+      menuBtn.addEventListener('click', function () {
+        setMenu(mobileMenu.classList.contains('hidden'));
+      });
+
+      // Cierra el menú al elegir una opción (y al redimensionar a escritorio)
+      document.querySelectorAll('.mobile-link').forEach(function (link) {
+        link.addEventListener('click', function () { setMenu(false); });
+      });
+      window.addEventListener('resize', function () {
+        if (window.innerWidth >= 1024) setMenu(false);
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') setMenu(false);
+      });
+
+      /* --- Mega-menú "Oferta Educativa" (clic, hover CSS, Esc, clic fuera) --- */
+      var ofertaDrop = document.getElementById('ofertaDrop');
+      var ofertaBtn = document.getElementById('ofertaDropBtn');
+      function setDrop(open) {
+        ofertaDrop.classList.toggle('open', open);
+        ofertaBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+      if (ofertaBtn) {
+        ofertaBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          setDrop(!ofertaDrop.classList.contains('open'));
+        });
+        document.addEventListener('click', function (e) {
+          if (ofertaDrop.classList.contains('open') && !ofertaDrop.contains(e.target)) setDrop(false);
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') setDrop(false);
+        });
+      }
+
+      /* --- Filtros de la oferta educativa --- */
+      var filterBtns = document.querySelectorAll('.filter-btn');
+      var filterCards = document.querySelectorAll('.filter-card');
+      function applyFilter(filter) {
+        filterBtns.forEach(function (b) {
+          var active = b.getAttribute('data-filter') === filter;
+          b.classList.toggle('active', active);
+          b.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        filterCards.forEach(function (card) {
+          var show = filter === 'todas' || card.getAttribute('data-area') === filter;
+          card.classList.toggle('hidden', !show);
+          card.classList.toggle('visible', show); // conserva la entrada animada
+        });
+      }
+      filterBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          applyFilter(btn.getAttribute('data-filter'));
+        });
+      });
+      applyFilter('todas');
+
+      /* --- Header con sombra al hacer scroll --- */
+      var header = document.getElementById('header');
+      var onScroll = function () {
+        header.classList.toggle('scrolled', window.scrollY > 8);
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      /* --- Animaciones reveal (respetan prefers-reduced-motion vía CSS) --- */
+      var reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-zoom, .reveal-fade');
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12 });
+        reveals.forEach(function (el) { io.observe(el); });
+      } else {
+        reveals.forEach(function (el) { el.classList.add('visible'); });
+      }
+
+      /* --- Barra de progreso de lectura --- */
+      var progressBar = document.getElementById('progressBar');
+      var onProgress = function () {
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        progressBar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+      };
+      window.addEventListener('scroll', onProgress, { passive: true });
+      window.addEventListener('resize', onProgress, { passive: true });
+      onProgress();
+
+      /* --- Contadores animados (datos del hero) --- */
+      function animateCount(el) {
+        var target = parseInt(el.getAttribute('data-count'), 10);
+        var suffix = el.getAttribute('data-suffix') || '';
+        var dur = 1400;
+        var start = null;
+        function step(ts) {
+          if (!start) start = ts;
+          var p = Math.min((ts - start) / dur, 1);
+          var eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+          el.textContent = Math.round(target * eased) + suffix;
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+      var stats = document.getElementById('heroStats');
+      if (stats) {
+        if ('IntersectionObserver' in window) {
+          var so = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                stats.querySelectorAll('[data-count]').forEach(animateCount);
+                so.disconnect();
+              }
+            });
+          }, { threshold: 0.4 });
+          so.observe(stats);
+        } else {
+          stats.querySelectorAll('[data-count]').forEach(function (el) {
+            el.textContent = el.getAttribute('data-count') + (el.getAttribute('data-suffix') || '');
+          });
+        }
+      }
+
+      /* --- Año dinámico en el footer --- */
+      document.getElementById('year').textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
