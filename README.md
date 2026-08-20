@@ -7,6 +7,8 @@ iteshu.edu.mx) con la claridad de navegación de uaq.mx.
 **Duración de la clase muestra:** 15 minutos · **Carreras:** 9 licenciaturas +
 nueva Maestría en Desarrollo Regional e Innovación Tecnológica.
 
+**🌐 Sitio publicado en GitHub Pages:** https://guslopezc.github.io/iteshu-website/
+
 ---
 
 ## Archivos del proyecto
