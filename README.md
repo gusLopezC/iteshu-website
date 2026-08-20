@@ -77,8 +77,15 @@ nueva Maestría en Desarrollo Regional e Innovación Tecnológica.
 
 ### 3. Presentación opcional
 - Abrir `presentacion.html` en el navegador.
-- Navegar con flechas del teclado; `F` pantalla completa; `Esc` vista general.
-- Las 7 diapositivas siguen los 4 bloques del esquema.
+- Navegar con flechas del teclado; `F` pantalla completa; `Esc` vista general;
+  `S` abre la **vista del presentador con las notas del guion** (notas por diapositiva).
+- **Funciona 100% offline**: Reveal.js, las imágenes reales de ITESHU y las
+  fuentes están descargadas en `vendor/` y `assets/` (no usa CDN ni internet).
+  Ideal para llevar en USB o proyectar sin red.
+- Las 6 diapositivas siguen los 4 bloques del esquema
+  (1 elevator pitch · 3 oferta educativa · 2 diagnóstico vs. solución).
+- Nota: `index.html` (el sitio) sí requiere internet porque carga imágenes en
+  vivo desde iteshu.edu.mx y Tailwind por CDN.
 
 ### 4. Tips de tiempo (clase de 15 min)
 - 0:00–1:00 Elevator pitch · 1:00–7:00 Oferta educativa ·

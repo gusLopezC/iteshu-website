@@ -3,14 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITESHU · Prototipo Web estilo UAQ — Presentación</title>
+  <title>ITESHU · Prototipo Web estilo UAQ — Presentación (offline)</title>
 
-  <!-- Reveal.js (CDN) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+  <!-- ============================================================
+       Presentación 100% OFFLINE
+       - Reveal.js local (vendor/reveal/)
+       - Imágenes reales de iteshu.edu.mx descargadas (assets/img/)
+       - Fuentes locales (assets/fonts/)
+       ============================================================ -->
+  <link rel="stylesheet" href="vendor/reveal/reveal.css">
 
   <style>
     /* ===== Identidad 100% ITESHU (paleta extraída del sitio oficial) ===== */
+    @font-face {
+      font-family: 'Playfair Display';
+      src: url('assets/fonts/playfair.woff2') format('woff2');
+      font-weight: 600 800;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Inter';
+      src: url('assets/fonts/inter.woff2') format('woff2');
+      font-weight: 100 900;
+      font-display: swap;
+    }
+
     :root {
       --iteshu-primary: #1B396A;
       --iteshu-navy:    #222851;
@@ -18,173 +35,278 @@
       --iteshu-gold:    #bc955b;
       --iteshu-green:   #006e4d;
       --iteshu-vino:    #611232;
-      --iteshu-gobmx:   #0b231e;
-      --iteshu-light:   #f8f8f8;
       --iteshu-line:    #d6d3d3;
     }
-    .reveal { background: var(--iteshu-dark); color: #fff; font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; }
-    .reveal h1, .reveal h2, .reveal h3 { text-transform: none; color: #fff; font-weight: 800; letter-spacing: 0; }
-    .reveal h2 { font-size: 1.7em; }
-    .reveal .gold { color: var(--iteshu-gold); }
-    .reveal .small { font-size: .55em; color: rgba(255,255,255,.75); }
-    .reveal .tag { display:inline-block; font-size:.45em; letter-spacing:.25em; text-transform:uppercase; color:var(--iteshu-gold); font-weight:700; margin-bottom:.6em; }
-    .reveal ul { font-size: .6em; line-height: 1.6; }
-    .reveal .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 1.4em; text-align:left; font-size:.55em; }
-    .reveal .card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); border-radius: 10px; padding: 1em 1.2em; }
-    .reveal .card h3 { color: var(--iteshu-gold); font-size: 1.05em; margin-bottom:.35em; }
-    .reveal .badge { display:inline-block; background: var(--iteshu-gold); color: var(--iteshu-dark); font-weight:800; border-radius: 6px; padding:.15em .6em; font-size:.5em; vertical-align:middle; }
-    .reveal img.frame { border-radius: 10px; border: 2px solid var(--iteshu-gold); max-height: 340px; }
-    .reveal .logo { background:#fff; padding:.3em .5em; border-radius:8px; height:56px; }
-    .reveal .arrow { color: var(--iteshu-gold); font-size: 1.4em; }
-    .reveal section { padding: 0 4vw; }
-    .reveal .progress { color: var(--iteshu-gold); }
+
+    .reveal {
+      background: radial-gradient(1200px 600px at 15% -10%, rgba(27,57,106,.55), transparent 60%),
+                  radial-gradient(900px 500px at 110% 110%, rgba(0,110,77,.28), transparent 55%),
+                  var(--iteshu-dark);
+      color: #fff;
+      font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 30px;
+    }
+    .reveal h1, .reveal h2, .reveal h3 { text-transform: none; color: #fff; letter-spacing: 0; }
+    .reveal h1 { font-family: 'Playfair Display', Georgia, serif; font-weight: 800; line-height: 1.08; }
+    .reveal h2 { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 1.55em; line-height: 1.15; }
+    .reveal h3 { font-weight: 800; font-size: .85em; }
+
+    .gold { color: var(--iteshu-gold); }
+    .small { font-size: .55em; color: rgba(255,255,255,.72); }
+    .tag {
+      display: inline-block; font-size: .42em; letter-spacing: .28em;
+      text-transform: uppercase; color: var(--iteshu-gold); font-weight: 700; margin-bottom: .7em;
+    }
+    .sub { font-size: .62em; color: rgba(255,255,255,.8); line-height: 1.6; max-width: 42em; margin: 0 auto; }
+
+    /* Tarjetas */
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1em; text-align: left; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1em; text-align: left; }
+    .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: .9em; text-align: left; }
+    .card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 12px; padding: 1em 1.1em;
+    }
+    .card h3 { color: var(--iteshu-gold); font-size: .8em; margin-bottom: .35em; }
+    .card p { font-size: .5em; line-height: 1.55; color: rgba(255,255,255,.82); margin: 0; }
+    .card-img { border-radius: 10px; border: 2px solid var(--iteshu-gold); width: 100%; object-fit: cover; }
+
+    /* Tarjetas de carrera con imagen */
+    .prog { text-align: center; padding: .8em .6em; }
+    .prog img { width: 118px; height: 118px; border-radius: 50%; object-fit: cover; border: 3px solid var(--iteshu-gold); margin-bottom: .6em; }
+    .prog h3 { color: #fff; font-size: .62em; margin-bottom: .25em; }
+    .prog p { font-size: .42em; color: rgba(255,255,255,.7); line-height: 1.4; margin: 0; }
+    .prog .badge { display: inline-block; background: var(--iteshu-gold); color: var(--iteshu-dark); font-weight: 800; border-radius: 20px; padding: .1em .6em; font-size: .38em; margin-bottom: .4em; text-transform: uppercase; letter-spacing: .08em; }
+
+    /* Iconos de lista */
+    .items { list-style: none; margin: 0; padding: 0; text-align: left; }
+    .items li { display: flex; gap: .7em; align-items: flex-start; font-size: .55em; line-height: 1.5; margin-bottom: .65em; }
+    .items .ic { width: 1.5em; height: 1.5em; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1em; font-weight: 900; }
+    .items .no  { background: rgba(204,24,30,.2); color: #ff6b6b; border: 1px solid rgba(204,24,30,.5); }
+    .items .yes { background: rgba(0,110,77,.25); color: #6ee7a0; border: 1px solid rgba(0,110,77,.6); }
+    .items strong { color: #fff; }
+
+    /* Logo */
+    .logo { background: #fff; padding: .35em .6em; border-radius: 8px; height: 62px; }
+
+    /* Píe de cada diapositiva */
+    .slide-foot {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .7em 1.4em; font-size: .4em; color: rgba(255,255,255,.55);
+      border-top: 1px solid rgba(255,255,255,.12);
+      background: rgba(9,36,50,.85); backdrop-filter: blur(4px);
+    }
+    .slide-foot img { height: 26px; background: #fff; border-radius: 4px; padding: 2px 4px; }
+
+    .reveal .progress { color: var(--iteshu-gold); height: 4px; }
     .reveal .controls { color: var(--iteshu-gold); }
+    .reveal .slide-number { background: rgba(255,255,255,.08); color: var(--iteshu-gold); font-size: 12px; border-radius: 4px; padding: .1em .5em; }
+    .reveal blockquote { border-left: 4px solid var(--iteshu-gold); background: rgba(255,255,255,.05); padding: .6em 1em; font-size: .6em; font-style: italic; }
+    .reveal section { padding: 0 5vw; }
   </style>
 </head>
 <body>
+
 <div class="reveal">
   <div class="slides">
 
-    <!-- ============ 1 · PORTADA / ELEVATOR PITCH ============ -->
+    <!-- ============================================================
+         1 · ELEVATOR PITCH  [00:00 – 01:00]
+         ============================================================ -->
     <section>
-      <img class="logo" src="https://www.iteshu.edu.mx/iteshu/images/header/iteshu.png" alt="Logo ITESHU">
-      <h1 style="margin-top:.4em;">El motor tecnológico y sustentable de la región</h1>
-      <p class="tag">Prototipo web · Identidad ITESHU · Experiencia UAQ</p>
-      <p class="small">Instituto Tecnológico Superior de Huichapan · 9 programas · Nueva Maestría 2026</p>
-    </section>
-
-    <!-- ============ 2 · OFERTA EDUCATIVA ============ -->
-    <section>
-      <h2>Oferta educativa en tarjetas claras</h2>
-      <p class="tag">Lo que hoy está escondido en un menú, mañana estará a un clic</p>
-      <div class="grid2">
-        <div class="card">
-          <h3>Ingenierías</h3>
-          <ul>
-            <li>Mecatrónica</li>
-            <li>Sistemas Computacionales</li>
-            <li>Gestión Empresarial</li>
-            <li>Administración</li>
-            <li>Energías Renovables</li>
-            <li>Innovación Agrícola Sustentable</li>
-            <li>Industrial</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Creativas y posgrado</h3>
-          <ul>
-            <li>Arquitectura</li>
-            <li>Gastronomía</li>
-            <li>Maestría en Ingeniería Mecatrónica</li>
-            <li><strong>Maestría en Desarrollo Regional e Innovación Tecnológica</strong> <span class="badge">NUEVA</span></li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ 3 · NUEVA MAESTRÍA ============ -->
-    <section>
-      <h2>Nueva Maestría en Desarrollo Regional e Innovación Tecnológica</h2>
-      <div class="grid2" style="grid-template-columns: 3fr 2fr; align-items:center;">
-        <div style="text-align:left;">
-          <p class="tag">Convocatoria abierta · Posgrado 2026</p>
-          <ul>
-            <li><strong class="gold">LGAC 1:</strong> Desarrollo Regional Sostenible</li>
-            <li><strong class="gold">LGAC 2:</strong> Innovación Tecnológica e Industria 4.0</li>
-            <li>Agricultura sostenible · energías renovables · IA · soberanía alimentaria</li>
-            <li>Dirigida a egresados de ingeniería, arquitectura, administración, economía, ciencias ambientales y afines</li>
-          </ul>
-        </div>
-        <img class="frame" src="https://www.iteshu.edu.mx/iteshu/images/noticias/2026/Junio/023.jpg" alt="Evento oficial de la nueva maestría ITESHU" style="width:100%;">
-      </div>
-    </section>
-
-    <!-- ============ 4 · PROBLEMAS ACTUALES ============ -->
-    <section>
-      <h2>La web actual: 6 problemas concretos</h2>
-      <div class="grid2">
-        <div class="card">
-          <h3>Problema</h3>
-          <ul>
-            <li>Portada llena de licitaciones y avisos administrativos</li>
-            <li>Oferta educativa oculta en menú desplegable de 3 niveles</li>
-            <li>Textos extensos cortados por CSS (70px)</li>
-            <li>Carrusel mezclado, sin CTA para aspirantes</li>
-            <li>Sin "Quiero ser aspirante": no hay ruta de conversión</li>
-            <li>Sitio pesado: Bootstrap 3 + sliders + SDK de Facebook</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Solución estilo UAQ</h3>
-          <ul>
-            <li>Hero con foto real + CTA único</li>
-            <li>Oferta educativa en grid visual de portada</li>
-            <li>Cards con extractos cortos y whitespace</li>
-            <li>Hero estático con mensaje y CTA</li>
-            <li>CTAs persistentes + sección Admisión en 4 pasos</li>
-            <li>Un HTML ligero, lazy loading, mobile-first</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ 5 · IDENTIDAD RESPETADA ============ -->
-    <section>
-      <h2>Identidad 100% institucional</h2>
-      <p class="tag">Colores extraídos del CSS oficial de iteshu.edu.mx</p>
-      <div style="display:flex; justify-content:center; gap:.8em; flex-wrap:wrap; font-size:.6em;">
-        <span style="background:#1B396A; padding:.5em 1em; border-radius:8px;">#1B396A<br><small>Azul institucional</small></span>
-        <span style="background:#092432; padding:.5em 1em; border-radius:8px;">#092432<br><small>Oscuro institucional</small></span>
-        <span style="background:#bc955b; padding:.5em 1em; border-radius:8px; color:#092432;">#bc955b<br><small>Dorado</small></span>
-        <span style="background:#006e4d; padding:.5em 1em; border-radius:8px;">#006e4d<br><small>Verde logo</small></span>
-        <span style="background:#611232; padding:.5em 1em; border-radius:8px;">#611232<br><small>Vino Hidalgo</small></span>
-        <span style="background:#0b231e; padding:.5em 1em; border-radius:8px;">#0b231e<br><small>Barra gob.mx</small></span>
-      </div>
-      <p class="small" style="margin-top:1.2em;">Logo y fotografías reales: iteshu.edu.mx · Sin placeholders, sin paletas inventadas</p>
-    </section>
-
-    <!-- ============ 6 · DEMO ============ -->
-    <section>
-      <h2>Demo del prototipo</h2>
-      <p class="tag">index.html — un solo archivo, listo en el navegador</p>
-      <div class="grid2" style="grid-template-columns: 2fr 3fr; align-items:center;">
-        <div style="text-align:left;">
-          <ul>
-            <li>Header sticky + menú hamburguesa funcional</li>
-            <li>Hero con CTA "Quiero ser aspirante"</li>
-            <li>6 accesos rápidos estilo UAQ</li>
-            <li>Grid de 9 carreras con imagen real</li>
-            <li>Sección especial de la nueva maestría</li>
-            <li>Noticias, mapa del campus y footer institucional</li>
-          </ul>
-        </div>
-        <img class="frame" src="https://www.iteshu.edu.mx/iteshu/images/alumnos/biblioteca.jpg" alt="Biblioteca del ITESHU" style="width:100%;">
-      </div>
-      <p class="small" style="margin-top:1em;">Demo en vivo: <span class="gold">index.html</span> vs. iteshu.edu.mx</p>
-    </section>
-
-    <!-- ============ 7 · CIERRE ============ -->
-    <section>
-      <h2>Mismos colores. Mismo logo.<br>Mismas fotografías. <span class="gold">Nueva claridad.</span></h2>
-      <p class="tag" style="margin-top:1em;">Identidad intacta · Experiencia UAQ · Foco en el aspirante</p>
-      <p style="font-size:.7em; margin-top:1.5em;">
-        <a href="https://fichas.iteshu.edu.mx/" target="_blank" style="color:var(--iteshu-gold); text-decoration:underline;">¿Listo para tu ficha de admisión?</a>
+      <img class="logo" src="assets/img/logo.jpg" alt="Logo ITESHU">
+      <p class="tag" style="margin-top:1em;">Prototipo web · Identidad ITESHU · Experiencia UAQ</p>
+      <h1 style="font-size:2.6em; margin:.2em 0;">El motor tecnológico y<br>sustentable de la región</h1>
+      <p class="sub fragment" data-fragment-index="1">
+        <strong class="gold">9 programas</strong> de ingeniería, arquitectura y gastronomía ·
+        <strong class="gold">nueva Maestría en Desarrollo Regional e Innovación Tecnológica</strong> ·
+        desarrollo sustentable y transferencia tecnológica.
       </p>
-      <p class="small">ITESHU · Instituto Tecnológico Superior de Huichapan · iteshu.edu.mx</p>
+      <div class="grid3 fragment" data-fragment-index="2" style="max-width:34em; margin:1.4em auto 0;">
+        <div class="card" style="text-align:center;"><p><strong style="color:var(--iteshu-gold); font-size:1.6em;">9</strong><br>programas</p></div>
+        <div class="card" style="text-align:center;"><p><strong style="color:var(--iteshu-gold); font-size:1.6em;">2026</strong><br>nueva maestría</p></div>
+        <div class="card" style="text-align:center;"><p><strong style="color:var(--iteshu-gold); font-size:1.6em;">3+</strong><br>acreditaciones CACEI</p></div>
+      </div>
+      <aside class="notes">
+        [00:00] ¿Qué pasaría si la página del ITESHU convenciera tanto como su oferta educativa?
+        Hoy tenemos 9 programas y una nueva maestría; somos el motor tecnológico y sustentable de la región.
+        En 15 minutos les muestro cómo convertimos nuestra web en una puerta de entrada que convierte visitantes en aspirantes.
+      </aside>
+    </section>
+
+    <!-- ============================================================
+         2 · OFERTA EDUCATIVA — INGENIERÍAS  [01:30 – 04:00]
+         ============================================================ -->
+    <section>
+      <p class="tag">Oferta educativa · 1/3</p>
+      <h2>Ingenierías</h2>
+      <p class="sub" style="margin-bottom:1.2em;">Siete programas con laboratorios, vinculación empresarial y residencias profesionales reales.</p>
+      <div class="grid4">
+        <div class="card prog fragment"><span class="badge">Demandada</span><br><img src="assets/img/mecatronica.jpg" alt="Ingeniería Mecatrónica"><h3>Mecatrónica</h3><p>Automatización, robótica y sistemas ciberfísicos.</p></div>
+        <div class="card prog fragment"><span class="badge">Demandada</span><br><img src="assets/img/sistemasc.jpg" alt="Ingeniería en Sistemas Computacionales"><h3>Sistemas Computacionales</h3><p>Software, redes, datos e inteligencia artificial.</p></div>
+        <div class="card prog fragment"><span class="badge">Virtual</span><br><img src="assets/img/igem.jpg" alt="Ingeniería en Gestión Empresarial"><h3>Gestión Empresarial</h3><p>La ingeniería de los negocios y el emprendimiento.</p></div>
+        <div class="card prog fragment"><img src="assets/img/admin.jpg" alt="Ingeniería en Administración"><h3>Administración</h3><p>Gestión estratégica con visión de negocio.</p></div>
+        <div class="card prog fragment"><span class="badge">Sello regional</span><br><img src="assets/img/energias.jpg" alt="Ingeniería en Energías Renovables"><h3>Energías Renovables</h3><p>Solar, eólica y sustentabilidad energética.</p></div>
+        <div class="card prog fragment"><span class="badge">Sello regional</span><br><img src="assets/img/innovacion.jpg" alt="Ingeniería en Innovación Agrícola Sustentable"><h3>Innovación Agrícola</h3><p>Tecnología aplicada al campo con productores.</p></div>
+        <div class="card prog fragment"><img src="assets/img/industrial.jpg" alt="Ingeniería Industrial"><h3>Industrial</h3><p>Optimización de procesos, calidad y logística.</p></div>
+        <div class="card prog fragment" style="display:flex; flex-direction:column; justify-content:center; align-items:center; border-color:rgba(188,149,91,.5); background:rgba(188,149,91,.08);">
+          <p style="font-size:.5em; color:var(--iteshu-gold); font-weight:800;">+</p>
+          <h3 style="color:var(--iteshu-gold);">Modalidades</h3>
+          <p>Mixta · Fin de semana · Espacio académico Tecozautla</p>
+        </div>
+      </div>
+      <aside class="notes">
+        [01:30] Seis ingenierías, todas con laboratorios, vinculación empresarial y residencias profesionales reales.
+        Mencionar el sello regional de Energías Renovables e Innovación Agrícola, y la modalidad virtual de Gestión Empresarial.
+      </aside>
+    </section>
+
+    <!-- ============================================================
+         3 · OFERTA EDUCATIVA — ARQUITECTURA & GASTRONOMÍA  [04:00 – 05:00]
+         ============================================================ -->
+    <section>
+      <p class="tag">Oferta educativa · 2/3</p>
+      <h2>Arquitectura y Gastronomía</h2>
+      <p class="sub" style="margin-bottom:1.2em;">Las áreas creativas donde la identidad se encuentra con el emprendimiento.</p>
+      <div class="grid2" style="max-width:44em; margin:0 auto;">
+        <div class="card" style="padding:1.2em;">
+          <img class="card-img" src="assets/img/arquitectura.jpg" alt="Arquitectura" style="height:220px;">
+          <h3 style="margin-top:.8em;">Arquitectura</h3>
+          <p>Diseño del hábitat humano: espacios sostenibles para la comunidad, con visión de desarrollo territorial.</p>
+        </div>
+        <div class="card" style="padding:1.2em;">
+          <img class="card-img" src="assets/img/gastronomia.jpg" alt="Gastronomía" style="height:220px;">
+          <h3 style="margin-top:.8em;">Gastronomía</h3>
+          <p>La cocina como industria, identidad y emprendimiento: del aula al restaurante y al producto regional.</p>
+        </div>
+      </div>
+      <aside class="notes">
+        [04:00] La segunda familia: las áreas creativas. Arquitectura diseñando el hábitat de nuestras comunidades;
+        Gastronomía con la cocina como industria y como identidad. Donde la creatividad se encuentra con el emprendimiento.
+      </aside>
+    </section>
+
+    <!-- ============================================================
+         4 · OFERTA EDUCATIVA — MAESTRÍA  [05:00 – 06:30]
+         ============================================================ -->
+    <section>
+      <p class="tag">Oferta educativa · 3/3 · Nuevo posgrado</p>
+      <h2>Maestría en Desarrollo Regional e<br>Innovación Tecnológica</h2>
+      <div class="grid2" style="grid-template-columns: 3fr 2fr; align-items:center; margin-top:1em;">
+        <div>
+          <ul class="items">
+            <li class="fragment"><span class="ic yes">✓</span><span><strong>LGAC 1 · Desarrollo Regional Sostenible:</strong> agricultura sostenible, soberanía alimentaria y proyectos con impacto territorial.</span></li>
+            <li class="fragment"><span class="ic yes">✓</span><span><strong>LGAC 2 · Innovación Tecnológica e Industria 4.0:</strong> energías renovables, inteligencia artificial y emprendimiento tecnológico.</span></li>
+            <li class="fragment"><span class="ic yes">✓</span><span>Dirigida a egresados de <strong>ingeniería, arquitectura, administración, economía y ciencias ambientales</strong>.</span></li>
+          </ul>
+          <p class="small fragment" style="margin-top:1em;">También contamos con la <strong class="gold">Maestría en Ingeniería Mecatrónica</strong> (posgrado profesionalizante).</p>
+        </div>
+        <div class="fragment" style="position:relative;">
+          <div style="position:absolute; inset:-10px; border:2px solid var(--iteshu-gold); border-radius:14px;"></div>
+          <img class="card-img" src="assets/img/maestria_dev.jpg" alt="Fotografía oficial: evento de la nueva Maestría" style="height:280px;">
+          <div style="position:absolute; bottom:-14px; left:10px; background:var(--iteshu-gold); color:var(--iteshu-dark); border-radius:8px; padding:.4em .8em; font-size:.45em; font-weight:800;">
+            Convocatoria abierta · 2026
+          </div>
+        </div>
+      </div>
+      <aside class="notes">
+        [05:00] La gran novedad: la Maestría en Desarrollo Regional e Innovación Tecnológica.
+        Dos LGAC: Desarrollo Regional Sostenible e Innovación Tecnológica e Industria 4.0.
+        Responde a una necesidad real: la región necesita especialistas que conecten la tecnología con el desarrollo de las comunidades.
+      </aside>
+    </section>
+
+    <!-- ============================================================
+         5 · PROBLEMAS DE LA WEB ACTUAL  [07:00 – 09:30]
+         ============================================================ -->
+    <section>
+      <p class="tag">Diagnóstico · 1/2</p>
+      <h2>La web actual: problemas concretos</h2>
+      <p class="sub" style="margin-bottom:1em;">iteshu.edu.mx visto con ojos de aspirante.</p>
+      <div class="grid2" style="max-width:46em; margin:0 auto;">
+        <div class="card" style="border-left:4px solid #cc181e;">
+          <ul class="items">
+            <li class="fragment"><span class="ic no">✗</span><span><strong>Portada llena de licitaciones</strong> — el aspirante no sabe en 5 segundos qué se estudia.</span></li>
+            <li class="fragment"><span class="ic no">✗</span><span><strong>Oferta oculta</strong> en un menú desplegable de 3 niveles.</span></li>
+            <li class="fragment"><span class="ic no">✗</span><span><strong>Textos extensos</strong> cortados por CSS en lugar de resumidos.</span></li>
+          </ul>
+        </div>
+        <div class="card" style="border-left:4px solid #cc181e;">
+          <ul class="items">
+            <li class="fragment"><span class="ic no">✗</span><span><strong>Carrusel mezclado</strong> sin jerarquía ni llamado a la acción.</span></li>
+            <li class="fragment"><span class="ic no">✗</span><span><strong>No existe "Quiero ser aspirante"</strong> — no hay ruta de conversión.</span></li>
+            <li class="fragment"><span class="ic no">✗</span><span><strong>Sitio pesado y móvil deficiente</strong>: Bootstrap 3, sliders y SDK de Facebook.</span></li>
+          </ul>
+        </div>
+      </div>
+      <aside class="notes">
+        [07:30] Miremos la web actual con ojos de aspirante: portada dominada por licitaciones, oferta escondida,
+        textos sin jerarquía, carrusel que obliga a esperar, sin CTA para aspirantes y un sitio pesado que en móvil se degrada.
+      </aside>
+    </section>
+
+    <!-- ============================================================
+         6 · SOLUCIONES DEL PROTOTIPO  [09:30 – 11:00]
+         ============================================================ -->
+    <section>
+      <p class="tag">Diagnóstico · 2/2 · Estilo UAQ + identidad ITESHU</p>
+      <h2>La propuesta resuelve todo</h2>
+      <p class="sub" style="margin-bottom:1em;">Mismos colores, mismo logo y mismas fotografías. <span class="gold">Nueva claridad.</span></p>
+      <div class="grid2" style="max-width:46em; margin:0 auto;">
+        <div class="card" style="border-left:4px solid var(--iteshu-green);">
+          <ul class="items">
+            <li class="fragment"><span class="ic yes">✓</span><span><strong>Hero con foto real + CTA único</strong> "Quiero ser aspirante".</span></li>
+            <li class="fragment"><span class="ic yes">✓</span><span><strong>Oferta educativa en grid de portada</strong> con filtros por área.</span></li>
+            <li class="fragment"><span class="ic yes">✓</span><span><strong>Cards con extractos cortos</strong> y whitespace estilo UAQ.</span></li>
+          </ul>
+        </div>
+        <div class="card" style="border-left:4px solid var(--iteshu-green);">
+          <ul class="items">
+            <li class="fragment"><span class="ic yes">✓</span><span><strong>Sección especial de la nueva Maestría</strong> + convocatoria.</span></li>
+            <li class="fragment"><span class="ic yes">✓</span><span><strong>Admisión en 4 pasos</strong> y CTAs persistentes.</span></li>
+            <li class="fragment"><span class="ic yes">✓</span><span><strong>Un solo HTML ligero</strong>, mobile-first, accesible y con animaciones.</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="fragment" style="margin-top:1.2em; font-size:.6em;">
+        <strong class="gold" style="font-family:'Playfair Display', serif; font-size:1.5em;">¿Listo para ser parte del ITESHU?</strong><br>
+        <span class="small">Siguiente paso: tu ficha de admisión en <span class="gold">fichas.iteshu.edu.mx</span></span>
+      </p>
+      <aside class="notes">
+        [09:30] La propuesta resuelve todo manteniendo exactamente la identidad del ITESHU.
+        Hero con foto real y CTA, oferta en grid con filtros, cards limpias, sección de la nueva maestría,
+        admisión en 4 pasos, y un solo archivo ligero y mobile-first. [14:15] Tres ideas: identidad intacta,
+        claridad tipo UAQ, foco total en el aspirante. Gracias.
+      </aside>
     </section>
 
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<!-- Píe de marca (fijo en todas las diapositivas) -->
+<div class="slide-foot">
+  <span style="display:flex; align-items:center; gap:.6em;">
+    <img src="assets/img/logo.jpg" alt="ITESHU">
+    Instituto Tecnológico Superior de Huichapan
+  </span>
+  <span>Prototipo web · estilo UAQ + identidad ITESHU</span>
+</div>
+
+<!-- Reveal.js local + plugin de notas -->
+<script src="vendor/reveal/reveal.js"></script>
+<script src="vendor/reveal/plugin/notes/notes.js"></script>
 <script>
   Reveal.initialize({
     hash: true,
     controls: true,
     progress: true,
+    slideNumber: 'c/t',
     center: true,
     transition: 'slide',
-    transitionSpeed: 'fast'
+    transitionSpeed: 'fast',
+    plugins: [RevealNotes]
   });
 </script>
 </body>
