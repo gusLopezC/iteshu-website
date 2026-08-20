@@ -371,7 +371,7 @@
          7 · PROBLEMAS DE LA WEB ACTUAL  [07:00 – 09:30]
          ============================================================ -->
     <section>
-      <p class="tag">Diagnóstico · 1/2</p>
+      <p class="tag">Diagnóstico · Experiencia 1/3</p>
       <h2>La web actual: problemas concretos</h2>
       <p class="sub" style="margin-bottom:1em;">iteshu.edu.mx visto con ojos de aspirante.</p>
       <div class="grid2" style="max-width:36em; margin:0 auto;">
@@ -397,10 +397,78 @@
     </section>
 
     <!-- ============================================================
+         7b · INFRAESTRUCTURA Y PLATAFORMAS  [anexo técnico]
+         ============================================================ -->
+    <section>
+      <p class="tag">Diagnóstico técnico · Infraestructura 2/3</p>
+      <h2>Infraestructura y plataformas</h2>
+      <p class="sub" style="margin-bottom:1em;">Todo el ecosistema vive en <span class="gold">3 IPs propias</span> (200.79.178–181.x), sin CDN ni WAF delante.</p>
+      <div class="grid2">
+        <div class="card" style="border-left:4px solid var(--iteshu-green);">
+          <ul class="items">
+            <li class="fragment"><span class="ic yes">✓</span><span><strong>www + Moodle</strong> → nginx · PHP 8.3 · Plesk (IP 200.79.181.209), HTTPS forzado.</span></li>
+            <li class="fragment"><span class="ic yes">✓</span><span><strong>Correo Google Workspace</strong> con SPF + DMARC estricto (<code>p=quarantine</code>).</span></li>
+            <li class="fragment"><span class="ic yes">✓</span><span><strong>Certificado comodín GoDaddy</strong> <code>*.iteshu.edu.mx</code> vigente hasta feb 2027.</span></li>
+          </ul>
+        </div>
+        <div class="card" style="border-left:4px solid #cc181e;">
+          <ul class="items">
+            <li class="fragment"><span class="ic no">✗</span><span><strong>fichas (admisiones y pagos)</strong> → Apache 2.4.6 · PHP 7.1 EOL 2019 · IP 200.79.178.211.</span></li>
+            <li class="fragment"><span class="ic no">✗</span><span><strong>Portal Alumno</strong> → IIS 8.5 / Windows 2012 R2 EOL, <strong>solo HTTP</strong> (IP 200.79.178.210).</span></li>
+            <li class="fragment"><span class="ic no">✗</span><span><strong>DNS propio</strong> ns1/ns2 sin respaldo externo: si cae, caen sitio, correo y fichas.</span></li>
+          </ul>
+        </div>
+      </div>
+      <aside class="notes">
+        [Anexo técnico] La plataforma principal está moderna: nginx con PHP 8.3 administrado con Plesk,
+        Moodle en el mismo servidor, correo en Google con SPF y DMARC bien configurados.
+        Pero los sistemas críticos están en servidores viejos: el portal de fichas corre en Apache 2.4.6
+        con PHP 7.1 —sin parches desde 2019— y el Portal Alumno es un Windows 2012 R2 que solo habla HTTP.
+        Todo en tres IPs propias, sin CDN ni firewall de aplicaciones.
+      </aside>
+    </section>
+
+    <!-- ============================================================
+         7c · SEGURIDAD: RIESGOS Y PLAN DE MEJORA  [anexo técnico]
+         ============================================================ -->
+    <section>
+      <p class="tag">Diagnóstico técnico · Seguridad 3/3</p>
+      <h2>Seguridad: riesgos y plan de mejora</h2>
+      <div class="grid2">
+        <div class="card" style="border-left:4px solid #cc181e;">
+          <p style="font-size:.5em; color:#ff6b6b; font-weight:800; letter-spacing:.15em; text-transform:uppercase; margin:.2em 0 .6em;">Riesgos detectados</p>
+          <ul class="items">
+            <li class="fragment"><span class="ic no">✗</span><span><strong>Certificado autofirmado vencido (ene 2020)</strong> en el portal de fichas: el aspirante ve la alerta roja del navegador justo al pagar.</span></li>
+            <li class="fragment"><span class="ic no">✗</span><span><strong>Credenciales de alumnos sin cifrar</strong>: el login del Portal Alumno viaja por HTTP plano.</span></li>
+            <li class="fragment"><span class="ic no">✗</span><span><strong>Sin cabeceras HSTS/CSP</strong>; cookies de sesión sin Secure/HttpOnly; versiones de PHP/Apache/IIS expuestas.</span></li>
+          </ul>
+        </div>
+        <div class="card" style="border-left:4px solid var(--iteshu-green);">
+          <p style="font-size:.5em; color:#6ee7a0; font-weight:800; letter-spacing:.15em; text-transform:uppercase; margin:.2em 0 .6em;">Plan rápido · recursos ya contratados</p>
+          <ul class="items">
+            <li class="fragment"><span class="ic yes">1</span><span><strong>Hoy, costo $0:</strong> instalar el comodín GoDaddy ya pagado en fichas y forzar HTTPS.</span></li>
+            <li class="fragment"><span class="ic yes">2</span><span><strong>Esta semana:</strong> TLS para Portal Alumno, cabeceras de seguridad, cookies endurecidas y DNS secundario.</span></li>
+            <li class="fragment"><span class="ic yes">3</span><span><strong>Este trimestre:</strong> migrar fichas al servidor Plesk (PHP 8.3) y modernizar el Portal Alumno.</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="fragment small" style="margin-top:1em;">Evidencia y metodología: <span class="gold">05_infraestructura_seguridad.md</span></p>
+      <aside class="notes">
+        [Anexo técnico] El hallazgo más serio: el portal donde el aspirante paga su ficha usa un certificado
+        autofirmado vencido desde enero de 2020 — años entrenando a nuestros usuarios a aceptar alertas de seguridad.
+        Y las credenciales de los alumnos actuales viajan sin cifrar.
+        La buena noticia: casi todo se corrige con recursos que ya tenemos.
+        El comodín GoDaddy ya está pagado; instalarlo en fichas toma minutos.
+        Después: TLS para el Portal Alumno, cabeceras de seguridad y migrar fichas al servidor moderno.
+        El detalle técnico completo, con evidencia comando a comando, está en el documento 05.
+      </aside>
+    </section>
+
+    <!-- ============================================================
          8 · SOLUCIONES DEL PROTOTIPO  [09:30 – 11:00]
          ============================================================ -->
     <section>
-      <p class="tag">Diagnóstico · 2/2 · La propuesta</p>
+      <p class="tag">La propuesta</p>
       <h2>La propuesta resuelve todo</h2>
       <p class="sub" style="margin-bottom:1em;">Mismos colores, mismo logo y mismas fotografías. <span class="gold">Nueva claridad.</span></p>
       <div class="grid2" style="max-width:36em; margin:0 auto;">

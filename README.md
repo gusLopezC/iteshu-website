@@ -21,7 +21,8 @@ nueva Maestría en Desarrollo Regional e Innovación Tecnológica.
 | `02_guion_clase.md` | Guion oral completo con tiempos y contacto visual |
 | `03_diagnostico_web.md` | 8 problemas UX del sitio actual vs. la propuesta |
 | `04_resumen_comite.md` | Resumen de 1 página para el comité |
-| `presentacion.html` | Presentación opcional en Reveal.js (7 diapositivas) |
+| `05_infraestructura_seguridad.md` | Análisis de infraestructura (IPs, servidores) y seguridad con plan de mejora priorizado |
+| `presentacion.html` | Presentación opcional en Reveal.js (10 diapositivas, incluye anexo técnico de infraestructura y seguridad) |
 
 ### Estructura del prototipo (secciones)
 1. **Header sticky** — logo real, menú principal con **mega-menú "Oferta Educativa"**
@@ -82,8 +83,9 @@ nueva Maestría en Desarrollo Regional e Innovación Tecnológica.
 - **Funciona 100% offline**: Reveal.js, las imágenes reales de ITESHU y las
   fuentes están descargadas en `vendor/` y `assets/` (no usa CDN ni internet).
   Ideal para llevar en USB o proyectar sin red.
-- Las 6 diapositivas siguen los 4 bloques del esquema
-  (1 elevator pitch · 3 oferta educativa · 2 diagnóstico vs. solución).
+- Las 10 diapositivas: 1 elevator pitch · 5 oferta educativa (panorama, 2×ingenierías,
+  arquitectura/gastronomía, posgrado) · 3 diagnóstico (experiencia, infraestructura, seguridad) ·
+  1 soluciones + cierre.
 - Nota: `index.html` (el sitio) sí requiere internet porque carga imágenes en
   vivo desde iteshu.edu.mx y Tailwind por CDN.
 
